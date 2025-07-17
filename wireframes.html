@@ -29,7 +29,7 @@
                         'yum-card-hover': '#f8fcfb',      // Subtle tint
                         
                         // States and variants
-                        'yum-primary-ec': '#55cfc7ec',    // Primary with opacity
+                        'yum-primary-ec': '#46afadec',    // Primary with opacity
                         'yum-secondary-ec': '#02ecd4ec',  // Secondary variant
                     }
                 }
@@ -38,7 +38,7 @@
     </script>
     <style>
         .yum-gradient-bg {
-            background: linear-gradient(135deg, #f4f4f4 0%, #caffde 100%);
+            background: linear-gradient(135deg, #f4f4f4 0%, #f9fce3 100%);
         }
         .yum-gradient-accent {
             background: linear-gradient(135deg, #7388c6 0%, #a8b8e6 100%);
@@ -60,6 +60,22 @@
         }
         .yum-shadow-accent-hover {
             box-shadow: 0 8px 20px rgba(115, 136, 198, 0.4);
+        }
+        /* Enhanced button styles for better UX */
+        .yum-button-primary {
+            background: linear-gradient(135deg, #7388c6 0%, #a8b8e6 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .yum-button-primary:hover {
+            background: linear-gradient(135deg, #5f7bc0 0%, #9bb0e0 100%);
+            transform: translateY(-2px);
+        }
+        /* Improved card hover effects */
+        .yum-card-enhanced {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .yum-card-enhanced:hover {
+            transform: translateY(-8px) scale(1.02);
         }
     </style>
 </head>
@@ -101,19 +117,19 @@
                     <p class="text-xl text-yum-secondary mb-10 max-w-lg font-normal">Your personal recipe discovery and meal planning companion</p>
                 </div>
                 <div class="flex gap-10 p-12 justify-center flex-wrap">
-                    <div class="bg-yum-card w-80 h-64 rounded-3xl shadow-lg p-10 text-center flex flex-col justify-between border border-green-100 transition-all duration-400 hover:-translate-y-1.5 hover:shadow-xl hover:bg-yum-card-hover">
+                    <div class="bg-yum-card w-80 h-64 rounded-3xl shadow-lg p-10 text-center flex flex-col justify-between border border-yum-primary/20 transition-all duration-400 hover:-translate-y-1.5 hover:shadow-xl hover:bg-yum-card-hover yum-card-enhanced">
                         <div>
                             <h3 class="text-2xl text-yum-secondary-ec mb-4 font-semibold">🔍 Find Recipes</h3>
                             <p class="text-yum-secondary text-base leading-relaxed">Discover new recipes from thousands of options</p>
                         </div>
-                        <button class="yum-gradient-accent text-white border-0 px-9 py-4 rounded-2xl font-semibold cursor-pointer transition-all duration-300 yum-shadow-accent text-base hover:-translate-y-0.5 hover:yum-shadow-accent-hover hover:yum-gradient-accent-hover">Get Started</button>
+                        <button class="yum-button-primary text-white border-0 px-9 py-4 rounded-2xl font-semibold cursor-pointer transition-all duration-300 yum-shadow-accent text-base">Get Started</button>
                     </div>
-                    <div class="bg-yum-card w-80 h-64 rounded-3xl shadow-lg p-10 text-center flex flex-col justify-between border border-green-100 transition-all duration-400 hover:-translate-y-1.5 hover:shadow-xl hover:bg-yum-card-hover">
+                    <div class="bg-yum-card w-80 h-64 rounded-3xl shadow-lg p-10 text-center flex flex-col justify-between border border-yum-primary/20 transition-all duration-400 hover:-translate-y-1.5 hover:shadow-xl hover:bg-yum-card-hover yum-card-enhanced">
                         <div>
                             <h3 class="text-2xl text-yum-secondary-ec mb-4 font-semibold">📅 Plan Meals</h3>
                             <p class="text-yum-secondary text-base leading-relaxed">Schedule your weekly meals and organize your cooking</p>
                         </div>
-                        <button class="yum-gradient-accent text-white border-0 px-9 py-4 rounded-2xl font-semibold cursor-pointer transition-all duration-300 yum-shadow-accent text-base hover:-translate-y-0.5 hover:yum-shadow-accent-hover hover:yum-gradient-accent-hover">Start Planning</button>
+                        <button class="yum-button-primary text-white border-0 px-9 py-4 rounded-2xl font-semibold cursor-pointer transition-all duration-300 yum-shadow-accent text-base">Start Planning</button>
                     </div>
                 </div>
             </div>
@@ -144,28 +160,28 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-8 p-8">
-                    <div class="bg-white/95 rounded-3xl yum-shadow-primary overflow-hidden border border-yum-primary/10 transition-all duration-400 backdrop-blur-sm hover:-translate-y-2 hover:shadow-2xl">
-                        <div class="w-full h-48 bg-gradient-to-br from-yum-primary-light to-green-200 flex items-center justify-center text-yum-secondary text-2xl font-medium">🍝 Recipe Image</div>
+                    <div class="bg-white/95 rounded-3xl yum-shadow-primary overflow-hidden border border-yum-primary/10 transition-all duration-400 backdrop-blur-sm hover:-translate-y-2 hover:shadow-2xl yum-card-enhanced">
+                        <div class="w-full h-48 bg-gradient-to-br from-yum-primary-light to-yum-green-light flex items-center justify-center text-yum-secondary text-2xl font-medium">🍝 Recipe Image</div>
                         <div class="p-6">
                             <div class="text-xl font-semibold mb-3 text-yum-primary-ec">Pasta Carbonara</div>
                             <div class="text-yum-secondary text-sm mb-5 font-normal">⏱️ 30 min • 👥 4 servings</div>
-                            <button class="yum-gradient-accent text-white border-0 px-7 py-3 rounded-xl cursor-pointer w-full font-semibold transition-all duration-300 text-base yum-shadow-accent hover:-translate-y-0.5 hover:yum-shadow-accent-hover hover:yum-gradient-accent-hover">View Details</button>
+                            <button class="yum-button-primary text-white border-0 px-7 py-3 rounded-xl cursor-pointer w-full font-semibold transition-all duration-300 text-base yum-shadow-accent">View Details</button>
                         </div>
                     </div>
-                    <div class="bg-white/95 rounded-3xl yum-shadow-primary overflow-hidden border border-yum-primary/10 transition-all duration-400 backdrop-blur-sm hover:-translate-y-2 hover:shadow-2xl">
-                        <div class="w-full h-48 bg-gradient-to-br from-yum-primary-light to-green-200 flex items-center justify-center text-yum-secondary text-2xl font-medium">🍛 Recipe Image</div>
+                    <div class="bg-white/95 rounded-3xl yum-shadow-primary overflow-hidden border border-yum-primary/10 transition-all duration-400 backdrop-blur-sm hover:-translate-y-2 hover:shadow-2xl yum-card-enhanced">
+                        <div class="w-full h-48 bg-gradient-to-br from-yum-accent-light to-yum-purple flex items-center justify-center text-yum-secondary text-2xl font-medium">🍛 Recipe Image</div>
                         <div class="p-6">
                             <div class="text-xl font-semibold mb-3 text-yum-primary-ec">Chicken Curry</div>
                             <div class="text-yum-secondary text-sm mb-5 font-normal">⏱️ 45 min • 👥 6 servings</div>
-                            <button class="yum-gradient-accent text-white border-0 px-7 py-3 rounded-xl cursor-pointer w-full font-semibold transition-all duration-300 text-base yum-shadow-accent hover:-translate-y-0.5 hover:yum-shadow-accent-hover hover:yum-gradient-accent-hover">View Details</button>
+                            <button class="yum-button-primary text-white border-0 px-7 py-3 rounded-xl cursor-pointer w-full font-semibold transition-all duration-300 text-base yum-shadow-accent">View Details</button>
                         </div>
                     </div>
-                    <div class="bg-white/95 rounded-3xl yum-shadow-primary overflow-hidden border border-yum-primary/10 transition-all duration-400 backdrop-blur-sm hover:-translate-y-2 hover:shadow-2xl">
-                        <div class="w-full h-48 bg-gradient-to-br from-yum-primary-light to-green-200 flex items-center justify-center text-yum-secondary text-2xl font-medium">🥗 Recipe Image</div>
+                    <div class="bg-white/95 rounded-3xl yum-shadow-primary overflow-hidden border border-yum-primary/10 transition-all duration-400 backdrop-blur-sm hover:-translate-y-2 hover:shadow-2xl yum-card-enhanced">
+                        <div class="w-full h-48 bg-gradient-to-br from-yum-green to-yum-primary-light flex items-center justify-center text-yum-secondary text-2xl font-medium">🥗 Recipe Image</div>
                         <div class="p-6">
                             <div class="text-xl font-semibold mb-3 text-yum-primary-ec">Fresh Salad Bowl</div>
                             <div class="text-yum-secondary text-sm mb-5 font-normal">⏱️ 15 min • 👥 2 servings</div>
-                            <button class="yum-gradient-accent text-white border-0 px-7 py-3 rounded-xl cursor-pointer w-full font-semibold transition-all duration-300 text-base yum-shadow-accent hover:-translate-y-0.5 hover:yum-shadow-accent-hover hover:yum-gradient-accent-hover">View Details</button>
+                            <button class="yum-button-primary text-white border-0 px-7 py-3 rounded-xl cursor-pointer w-full font-semibold transition-all duration-300 text-base yum-shadow-accent">View Details</button>
                         </div>
                     </div>
                 </div>

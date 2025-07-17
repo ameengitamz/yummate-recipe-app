@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YumMate App - Visual Wireframes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // YumMate Brand Colors
+                        'yum-primary': '#55cfc7',        // Primary teal
+                        'yum-primary-light': '#caffde',   // Light mint
+                        'yum-secondary': '#02a08a',       // Dark teal
+                        'yum-accent': '#7388c6',          // Steel blue
+                        'yum-accent-light': '#a8b8e6',    // Light steel blue
+                        'yum-purple': '#dda0dd',          // Light purple
+                        'yum-green': '#90ee90',           // Light green
+                        'yum-green-light': '#98fb98',     // Very light green
+                        
+                        // Background gradients
+                        'yum-bg-start': '#f4f4f4',        // Light gray
+                        'yum-bg-end': '#caffde',          // Light mint
+                        
+                        // Card backgrounds
+                        'yum-card': '#fdfefe',            // Pure white
+                        'yum-card-hover': '#f8fcfb',      // Subtle tint
+                        
+                        // States and variants
+                        'yum-primary-ec': '#55cfc7ec',    // Primary with opacity
+                        'yum-secondary-ec': '#02ecd4ec',  // Secondary variant
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .yum-gradient-bg {
+            background: linear-gradient(135deg, #f4f4f4 0%, #caffde 100%);
+        }
+        .yum-gradient-accent {
+            background: linear-gradient(135deg, #7388c6 0%, #a8b8e6 100%);
+        }
+        .yum-gradient-accent-hover {
+            background: linear-gradient(135deg, #5f7bc0 0%, #9bb0e0 100%);
+        }
+        .yum-gradient-purple {
+            background: linear-gradient(135deg, #dda0dd 0%, #f0e6ff 100%);
+        }
+        .yum-gradient-green {
+            background: linear-gradient(135deg, #90ee90 0%, #98fb98 100%);
+        }
+        .yum-shadow-primary {
+            box-shadow: 0 8px 32px rgba(85, 207, 199, 0.1), 0 4px 16px rgba(85, 207, 199, 0.05);
+        }
+        .yum-shadow-accent {
+            box-shadow: 0 4px 12px rgba(115, 136, 198, 0.3);
+        }
+        .yum-shadow-accent-hover {
+            box-shadow: 0 8px 20px rgba(115, 136, 198, 0.4);
+        }
+    </style>
+</head>
+<body class="font-inter yum-gradient-bg text-yum-secondary leading-relaxed min-h-screen">
+    <div class="max-w-6xl mx-auto p-5">
+        <div class="bg-white/95 rounded-3xl p-7 mb-7 yum-shadow-primary border border-yum-primary/10 backdrop-blur-sm">
+            <h1 class="text-yum-primary-ec mb-4 font-semibold flex items-center">
+                <img src="public/yummate-logo.png" alt="YumMate Logo" class="w-8 h-8 inline-block align-middle mr-2">
+               YumMate App - Visual Wireframes
+            </h1>
+            <div class="flex gap-3 flex-wrap">
+                <button class="bg-blue-50 text-blue-600 border-0 px-7 py-3 rounded-xl cursor-pointer text-sm font-medium transition-all duration-300 shadow-sm hover:-translate-y-0.5 hover:bg-blue-100 active:yum-gradient-purple active:text-purple-700" onclick="showWireframe('home')">🏠 Home</button>
+                <button class="bg-blue-50 text-blue-600 border-0 px-7 py-3 rounded-xl cursor-pointer text-sm font-medium transition-all duration-300 shadow-sm hover:-translate-y-0.5 hover:bg-blue-100" onclick="showWireframe('recipes')">🔍 Recipe Finder</button>
+                <button class="bg-blue-50 text-blue-600 border-0 px-7 py-3 rounded-xl cursor-pointer text-sm font-medium transition-all duration-300 shadow-sm hover:-translate-y-0.5 hover:bg-blue-100" onclick="showWireframe('detail')">📖 Recipe Detail</button>
+                <button class="bg-blue-50 text-blue-600 border-0 px-7 py-3 rounded-xl cursor-pointer text-sm font-medium transition-all duration-300 shadow-sm hover:-translate-y-0.5 hover:bg-blue-100" onclick="showWireframe('planner')">📅 Meal Planner</button>
+                <button class="bg-blue-50 text-blue-600 border-0 px-7 py-3 rounded-xl cursor-pointer text-sm font-medium transition-all duration-300 shadow-sm hover:-translate-y-0.5 hover:bg-blue-100" onclick="showWireframe('grocery')">🛒 Grocery List</button>
+                <button class="bg-blue-50 text-blue-600 border-0 px-7 py-3 rounded-xl cursor-pointer text-sm font-medium transition-all duration-300 shadow-sm hover:-translate-y-0.5 hover:bg-blue-100" onclick="showWireframe('404')">🚫 404 Page</button>
+            </div>
+        </div>
+
+        <!-- Home Page Wireframe -->
+        <div id="home" class="bg-white/95 rounded-3xl yum-shadow-primary mb-7 overflow-hidden border border-yum-primary/10 backdrop-blur-sm block">
+            <div class="yum-gradient-bg text-yum-primary-ec px-7 py-4 text-lg font-semibold">🏠 Home Page (/)</div>
+            <div class="p-0 min-h-[600px]">
+                <div class="yum-gradient-bg h-17 flex items-center justify-between px-7 text-yum-primary-ec shadow-sm">
+                    <div class="text-2xl font-bold flex items-center gap-2">
+                        <img src="public/yummate-logo.png" alt="YumMate Logo" class="w-8 h-8">
+                       YumMate
+                    </div>
+                    <nav class="flex gap-7">
+                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Home</a>
+                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Recipes</a>
+                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Planner</a>
+                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Grocery</a>
+                    </nav>
+                </div>
+                <div class="yum-gradient-bg h-[540px] flex flex-col items-center justify-center text-center text-gray-700">
+                    <h1 class="text-5xl font-bold mb-5 text-yum-primary-ec">Welcome to YumMate!</h1>
+                    <p class="text-xl text-yum-secondary mb-10 max-w-lg font-normal">Your personal recipe discovery and meal planning companion</p>
+                </div>
+                <div class="flex gap-10 p-12 justify-center flex-wrap">
+                    <div class="bg-yum-card w-80 h-64 rounded-3xl shadow-lg p-10 text-center flex flex-col justify-between border border-green-100 transition-all duration-400 hover:-translate-y-1.5 hover:shadow-xl hover:bg-yum-card-hover">
+                        <div>
+                            <h3 class="text-2xl text-yum-secondary-ec mb-4 font-semibold">🔍 Find Recipes</h3>
+                            <p class="text-yum-secondary text-base leading-relaxed">Discover new recipes from thousands of options</p>
+                        </div>
+                        <button class="yum-gradient-accent text-white border-0 px-9 py-4 rounded-2xl font-semibold cursor-pointer transition-all duration-300 yum-shadow-accent text-base hover:-translate-y-0.5 hover:yum-shadow-accent-hover hover:yum-gradient-accent-hover">Get Started</button>
+                    </div>
+                    <div class="bg-yum-card w-80 h-64 rounded-3xl shadow-lg p-10 text-center flex flex-col justify-between border border-green-100 transition-all duration-400 hover:-translate-y-1.5 hover:shadow-xl hover:bg-yum-card-hover">
+                        <div>
+                            <h3 class="text-2xl text-yum-secondary-ec mb-4 font-semibold">📅 Plan Meals</h3>
+                            <p class="text-yum-secondary text-base leading-relaxed">Schedule your weekly meals and organize your cooking</p>
+                        </div>
+                        <button class="yum-gradient-accent text-white border-0 px-9 py-4 rounded-2xl font-semibold cursor-pointer transition-all duration-300 yum-shadow-accent text-base hover:-translate-y-0.5 hover:yum-shadow-accent-hover hover:yum-gradient-accent-hover">Start Planning</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipe Finder Wireframe -->
+        <div id="recipes" class="bg-white/95 rounded-3xl yum-shadow-primary mb-7 overflow-hidden border border-yum-primary/10 backdrop-blur-sm hidden">
+            <div class="yum-gradient-bg text-yum-primary-ec px-7 py-4 text-lg font-semibold">🔍 Recipe Finder (/recipes)</div>
+            <div class="p-0 min-h-[600px]">
+                <div class="yum-gradient-bg h-17 flex items-center justify-between px-7 text-yum-primary-ec shadow-sm">
+                    <div class="text-2xl font-bold flex items-center gap-2">
+                        <img src="public/yummate-logo.png" alt="YumMate Logo" class="w-8 h-8">YumMate
+                    </div>
+                    <nav class="flex gap-7">
+                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Home</a>
+                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Recipes</a>
+                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Planner</a>
+                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Grocery</a>
+                    </nav>
+                </div>
+                <div class="p-8 bg-gradient-to-br from-white/80 to-yum-primary-light/40 backdrop-blur-sm">
+                    <input type="text" class="w-full h-14 border-2 border-yum-primary/20 rounded-2xl px-6 text-lg mb-6 transition-all duration-300 bg-white/90 text-yum-secondary font-normal focus:border-yum-primary-ec focus:outline-none focus:shadow-lg focus:bg-white/95" placeholder="🔍 Search recipes...">
+                    <div class="flex gap-4 mb-6 flex-wrap">
+                        <button class="bg-white/90 border border-yum-primary/20 px-7 py-4 rounded-xl cursor-pointer text-yum-secondary font-medium transition-all duration-300 text-sm hover:border-yum-primary-ec hover:bg-white/95 hover:-translate-y-0.5 hover:shadow-lg">Cuisine ▼</button>
+                        <button class="bg-white/90 border border-yum-primary/20 px-7 py-4 rounded-xl cursor-pointer text-yum-secondary font-medium transition-all duration-300 text-sm hover:border-yum-primary-ec hover:bg-white/95 hover:-translate-y-0.5 hover:shadow-lg">Meal Type ▼</button>
+                        <button class="bg-white/90 border border-yum-primary/20 px-7 py-4 rounded-xl cursor-pointer text-yum-secondary font-medium transition-all duration-300 text-sm hover:border-yum-primary-ec hover:bg-white/95 hover:-translate-y-0.5 hover:shadow-lg">Diet ▼</button>
+                        <button class="bg-white/90 border border-yum-primary/20 px-7 py-4 rounded-xl cursor-pointer text-yum-secondary font-medium transition-all duration-300 text-sm hover:border-yum-primary-ec hover:bg-white/95 hover:-translate-y-0.5 hover:shadow-lg">Time ▼</button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-8 p-8">
+                    <div class="bg-white/95 rounded-3xl yum-shadow-primary overflow-hidden border border-yum-primary/10 transition-all duration-400 backdrop-blur-sm hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="w-full h-48 bg-gradient-to-br from-yum-primary-light to-green-200 flex items-center justify-center text-yum-secondary text-2xl font-medium">🍝 Recipe Image</div>
+                        <div class="p-6">
+                            <div class="text-xl font-semibold mb-3 text-yum-primary-ec">Pasta Carbonara</div>
+                            <div class="text-yum-secondary text-sm mb-5 font-normal">⏱️ 30 min • 👥 4 servings</div>
+                            <button class="yum-gradient-accent text-white border-0 px-7 py-3 rounded-xl cursor-pointer w-full font-semibold transition-all duration-300 text-base yum-shadow-accent hover:-translate-y-0.5 hover:yum-shadow-accent-hover hover:yum-gradient-accent-hover">View Details</button>
+                        </div>
+                    </div>
+                    <div class="bg-white/95 rounded-3xl yum-shadow-primary overflow-hidden border border-yum-primary/10 transition-all duration-400 backdrop-blur-sm hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="w-full h-48 bg-gradient-to-br from-yum-primary-light to-green-200 flex items-center justify-center text-yum-secondary text-2xl font-medium">🍛 Recipe Image</div>
+                        <div class="p-6">
+                            <div class="text-xl font-semibold mb-3 text-yum-primary-ec">Chicken Curry</div>
+                            <div class="text-yum-secondary text-sm mb-5 font-normal">⏱️ 45 min • 👥 6 servings</div>
+                            <button class="yum-gradient-accent text-white border-0 px-7 py-3 rounded-xl cursor-pointer w-full font-semibold transition-all duration-300 text-base yum-shadow-accent hover:-translate-y-0.5 hover:yum-shadow-accent-hover hover:yum-gradient-accent-hover">View Details</button>
+                        </div>
+                    </div>
+                    <div class="bg-white/95 rounded-3xl yum-shadow-primary overflow-hidden border border-yum-primary/10 transition-all duration-400 backdrop-blur-sm hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="w-full h-48 bg-gradient-to-br from-yum-primary-light to-green-200 flex items-center justify-center text-yum-secondary text-2xl font-medium">🥗 Recipe Image</div>
+                        <div class="p-6">
+                            <div class="text-xl font-semibold mb-3 text-yum-primary-ec">Fresh Salad Bowl</div>
+                            <div class="text-yum-secondary text-sm mb-5 font-normal">⏱️ 15 min • 👥 2 servings</div>
+                            <button class="yum-gradient-accent text-white border-0 px-7 py-3 rounded-xl cursor-pointer w-full font-semibold transition-all duration-300 text-base yum-shadow-accent hover:-translate-y-0.5 hover:yum-shadow-accent-hover hover:yum-gradient-accent-hover">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipe Detail Wireframe -->
+        <div id="detail" class="bg-white/95 rounded-3xl yum-shadow-primary mb-7 overflow-hidden border border-yum-primary/10 backdrop-blur-sm hidden">
+            <div class="yum-gradient-bg text-yum-primary-ec px-7 py-4 text-lg font-semibold">📖 Recipe Detail (/recipes/:id)</div>
+            <div class="p-6 text-center text-yum-secondary">Recipe detail wireframe with Tailwind classes...</div>
+        </div>
+
+        <!-- Meal Planner Wireframe -->
+        <div id="planner" class="bg-white/95 rounded-3xl yum-shadow-primary mb-7 overflow-hidden border border-yum-primary/10 backdrop-blur-sm hidden">
+            <div class="yum-gradient-bg text-yum-primary-ec px-7 py-4 text-lg font-semibold">📅 Meal Planner (/planner)</div>
+            <div class="p-6 text-center text-yum-secondary">Meal planner wireframe with Tailwind classes...</div>
+        </div>
+
+        <!-- Grocery List Wireframe -->
+        <div id="grocery" class="bg-white/95 rounded-3xl yum-shadow-primary mb-7 overflow-hidden border border-yum-primary/10 backdrop-blur-sm hidden">
+            <div class="yum-gradient-bg text-yum-primary-ec px-7 py-4 text-lg font-semibold">🛒 Grocery List (/groceries)</div>
+            <div class="p-6 text-center text-yum-secondary">Grocery list wireframe with Tailwind classes...</div>
+        </div>
+
+        <!-- 404 Page Wireframe -->
+        <div id="404" class="bg-white/95 rounded-3xl yum-shadow-primary mb-7 overflow-hidden border border-yum-primary/10 backdrop-blur-sm hidden">
+            <div class="yum-gradient-bg text-yum-primary-ec px-7 py-4 text-lg font-semibold">🚫 404 Page (/404)</div>
+            <div class="p-6 text-center text-yum-secondary">404 error page wireframe with Tailwind classes...</div>
+        </div>
+    </div>
+
+    <script>
+        function showWireframe(id) {
+            // Hide all wireframes
+            document.querySelectorAll('[id^="home"], [id^="recipes"], [id^="detail"], [id^="planner"], [id^="grocery"], [id^="404"]').forEach(w => w.classList.add('hidden'));
+            document.querySelectorAll('button').forEach(btn => {
+                btn.classList.remove('yum-gradient-purple', 'text-purple-700');
+                btn.classList.add('bg-blue-50', 'text-blue-600');
+            });
+            
+            // Show selected wireframe
+            document.getElementById(id).classList.remove('hidden');
+            event.target.classList.remove('bg-blue-50', 'text-blue-600');
+            event.target.classList.add('yum-gradient-purple', 'text-purple-700');
+        }
+    </script>
+</body>
+</html>

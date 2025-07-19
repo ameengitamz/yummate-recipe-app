@@ -38,7 +38,33 @@
     </script>
     <style>
         .yum-gradient-bg {
-            background: linear-gradient(135deg, #f4f4f4 0%, #f9fce3 100%);
+            background: url('./public/bg-image.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+        }
+        .yum-gradient-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(24, 24, 27, 0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .yum-gradient-bg > * {
+            position: relative;
+            z-index: 1;
+        }
+        /* Enhanced text shadows for better readability over background image */
+        .yum-text-shadow {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .yum-text-shadow-strong {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.5);
         }
         .yum-gradient-accent {
             background: linear-gradient(135deg, #7388c6 0%, #a8b8e6 100%);
@@ -79,7 +105,7 @@
         }
     </style>
 </head>
-<body class="font-inter yum-gradient-bg text-yum-secondary leading-relaxed min-h-screen">
+<body class="font-inter text-yum-secondary leading-relaxed min-h-screen">
     <div class="max-w-6xl mx-auto p-5">
         <div class="bg-white/95 rounded-3xl p-7 mb-7 yum-shadow-primary border border-yum-primary/10 backdrop-blur-sm">
             <h1 class="text-yum-primary-ec mb-4 font-semibold flex items-center">
@@ -97,39 +123,178 @@
         </div>
 
         <!-- Home Page Wireframe -->
-        <div id="home" class="bg-white/95 rounded-3xl yum-shadow-primary mb-7 overflow-hidden border border-yum-primary/10 backdrop-blur-sm block">
-            <div class="yum-gradient-bg text-yum-primary-ec px-7 py-4 text-lg font-semibold">🏠 Home Page (/)</div>
-            <div class="p-0 min-h-[600px]">
-                <div class="yum-gradient-bg h-17 flex items-center justify-between px-7 text-yum-primary-ec shadow-sm">
-                    <div class="text-2xl font-bold flex items-center gap-2">
-                        <img src="public/yummate-logo.png" alt="YumMate Logo" class="w-8 h-8">
-                       YumMate
-                    </div>
-                    <nav class="flex gap-7">
-                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Home</a>
-                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Recipes</a>
-                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Planner</a>
-                        <a href="#" class="text-yum-primary-ec no-underline font-medium">Grocery</a>
-                    </nav>
+        <div id="home" class="yum-gradient-bg rounded-3xl yum-shadow-primary mb-7 overflow-hidden border border-yum-primary/10 block min-h-[900px]">
+            <!-- Header Navigation -->
+            <div class="h-17 flex items-center justify-between px-7 shadow-sm border-b border-white/20">
+                <div class="text-2xl font-bold flex items-center gap-2 text-yum-primary-ec drop-shadow-lg yum-text-shadow-strong">
+                    <img src="public/yummate-logo.png" alt="YumMate Logo" class="w-8 h-8 drop-shadow-lg">
+                    YumMate
                 </div>
-                <div class="yum-gradient-bg h-[540px] flex flex-col items-center justify-center text-center text-gray-700">
-                    <h1 class="text-5xl font-bold mb-5 text-yum-primary-ec">Welcome to YumMate!</h1>
-                    <p class="text-xl text-yum-secondary mb-10 max-w-lg font-normal">Your personal recipe discovery and meal planning companion</p>
-                </div>
-                <div class="flex gap-10 p-12 justify-center flex-wrap">
-                    <div class="bg-yum-card w-80 h-64 rounded-3xl shadow-lg p-10 text-center flex flex-col justify-between border border-yum-primary/20 transition-all duration-400 hover:-translate-y-1.5 hover:shadow-xl hover:bg-yum-card-hover yum-card-enhanced">
-                        <div>
-                            <h3 class="text-2xl text-yum-secondary-ec mb-4 font-semibold">🔍 Find Recipes</h3>
-                            <p class="text-yum-secondary text-base leading-relaxed">Discover new recipes from thousands of options</p>
+                <nav class="flex gap-7">
+                    <a href="#" class="text-white no-underline font-medium border-b-2 border-white pb-1 drop-shadow-md yum-text-shadow">Home</a>
+                    <a href="#" class="text-white/90 no-underline font-medium hover:text-white transition-colors drop-shadow-md yum-text-shadow">Recipes</a>
+                    <a href="#" class="text-white/90 no-underline font-medium hover:text-white transition-colors drop-shadow-md yum-text-shadow">Planner</a>
+                    <a href="#" class="text-white/90 no-underline font-medium hover:text-white transition-colors drop-shadow-md yum-text-shadow">Grocery</a>
+                </nav>
+            </div>
+            
+            <!-- Hero Section -->
+            <div class="h-[500px] flex flex-col items-center justify-center text-center relative">
+                <div class="relative z-10 max-w-4xl">
+                    <h1 class="text-6xl font-bold mb-6 text-yum-primary-ec drop-shadow-lg yum-text-shadow-strong">Discover, Cook, Enjoy!</h1>
+                    <p class="text-2xl mb-8 max-w-2xl font-normal drop-shadow-md yum-text-shadow" style="color: rgb(255, 235, 170);">Your AI-powered culinary companion with 300,000+ recipes, smart meal planning, and personalized nutrition insights</p>
+                    
+                    <!-- Quick Search Bar -->
+                    <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-2xl border border-white/20 max-w-2xl mx-auto mb-8">
+                        <div class="flex items-center gap-4">
+                            <input type="text" placeholder="🔍 Search 300,000+ recipes..." class="flex-1 px-6 py-4 text-lg border-0 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yum-primary-ec text-yum-secondary">
+                            <button class="yum-button-primary text-white px-8 py-4 rounded-xl font-semibold text-lg hover:scale-105 transition-transform">
+                                Search
+                            </button>
                         </div>
-                        <button class="yum-button-primary text-white border-0 px-9 py-4 rounded-2xl font-semibold cursor-pointer transition-all duration-300 yum-shadow-accent text-base">Get Started</button>
                     </div>
-                    <div class="bg-yum-card w-80 h-64 rounded-3xl shadow-lg p-10 text-center flex flex-col justify-between border border-yum-primary/20 transition-all duration-400 hover:-translate-y-1.5 hover:shadow-xl hover:bg-yum-card-hover yum-card-enhanced">
-                        <div>
-                            <h3 class="text-2xl text-yum-secondary-ec mb-4 font-semibold">📅 Plan Meals</h3>
-                            <p class="text-yum-secondary text-base leading-relaxed">Schedule your weekly meals and organize your cooking</p>
+                    
+                    <!-- Feature Highlights -->
+                    <div class="flex justify-center gap-8 text-white/90 text-sm font-medium">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-green-400 rounded-full"></span>
+                            <span>AI-Powered</span>
                         </div>
-                        <button class="yum-button-primary text-white border-0 px-9 py-4 rounded-2xl font-semibold cursor-pointer transition-all duration-300 yum-shadow-accent text-base">Start Planning</button>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                            <span>300K+ Recipes</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-purple-400 rounded-full"></span>
+                            <span>Smart Nutrition</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-orange-400 rounded-full"></span>
+                            <span>Meal Planning</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Feature Cards Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 p-12 relative z-10">
+                <!-- Recipe Discovery Card -->
+                <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 text-center border border-white/20 transition-all duration-400 hover:-translate-y-3 hover:shadow-3xl hover:bg-white yum-card-enhanced">
+                    <div class="text-5xl mb-4">🔍</div>
+                    <h3 class="text-2xl font-bold text-yum-primary-ec mb-4">Smart Recipe Discovery</h3>
+                    <p class="text-yum-secondary text-base leading-relaxed mb-6">Search through 300,000+ recipes with AI-powered filters for cuisine, diet, allergies, and cooking time</p>
+                    <div class="flex justify-center gap-2 mb-6">
+                        <span class="bg-yum-primary/10 text-yum-primary px-3 py-1 rounded-full text-sm">Italian</span>
+                        <span class="bg-yum-primary/10 text-yum-primary px-3 py-1 rounded-full text-sm">Vegan</span>
+                        <span class="bg-yum-primary/10 text-yum-primary px-3 py-1 rounded-full text-sm">< 30min</span>
+                    </div>
+                    <button class="yum-button-primary text-white px-8 py-3 rounded-xl font-semibold w-full text-base">
+                        Explore Recipes
+                    </button>
+                </div>
+                
+                <!-- Nutrition Insights Card -->
+                <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 text-center border border-white/20 transition-all duration-400 hover:-translate-y-3 hover:shadow-3xl hover:bg-white yum-card-enhanced">
+                    <div class="text-5xl mb-4">📊</div>
+                    <h3 class="text-2xl font-bold text-yum-primary-ec mb-4">Nutrition Intelligence</h3>
+                    <p class="text-yum-secondary text-base leading-relaxed mb-6">Get detailed nutrition analysis, health scores, and personalized dietary recommendations for every recipe</p>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-green-50 rounded-lg p-3">
+                            <div class="text-lg font-bold text-green-600">420</div>
+                            <div class="text-sm text-green-600">Calories</div>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-3">
+                            <div class="text-lg font-bold text-blue-600">85%</div>
+                            <div class="text-sm text-blue-600">Health Score</div>
+                        </div>
+                    </div>
+                    <button class="yum-button-primary text-white px-8 py-3 rounded-xl font-semibold w-full text-base">
+                        View Nutrition
+                    </button>
+                </div>
+                
+                <!-- Meal Planning Card -->
+                <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 text-center border border-white/20 transition-all duration-400 hover:-translate-y-3 hover:shadow-3xl hover:bg-white yum-card-enhanced">
+                    <div class="text-5xl mb-4">📅</div>
+                    <h3 class="text-2xl font-bold text-yum-primary-ec mb-4">AI Meal Planning</h3>
+                    <p class="text-yum-secondary text-base leading-relaxed mb-6">Generate personalized weekly meal plans based on your preferences, dietary needs, and calorie goals</p>
+                    <div class="bg-yum-primary/5 rounded-lg p-4 mb-6">
+                        <div class="text-sm text-yum-secondary mb-2">This Week's Plan</div>
+                        <div class="text-yum-primary-ec font-semibold">15 meals • 2,000 cal/day</div>
+                    </div>
+                    <button class="yum-button-primary text-white px-8 py-3 rounded-xl font-semibold w-full text-base">
+                        Plan Meals
+                    </button>
+                </div>
+                
+                <!-- Smart Grocery Card -->
+                <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 text-center border border-white/20 transition-all duration-400 hover:-translate-y-3 hover:shadow-3xl hover:bg-white yum-card-enhanced">
+                    <div class="text-5xl mb-4">🛒</div>
+                    <h3 class="text-2xl font-bold text-yum-primary-ec mb-4">Smart Grocery Lists</h3>
+                    <p class="text-yum-secondary text-base leading-relaxed mb-6">Auto-generate organized grocery lists from your meal plans, sorted by store aisles with cost estimates</p>
+                    <div class="flex justify-between items-center bg-yum-primary/5 rounded-lg p-4 mb-6">
+                        <div class="text-sm text-yum-secondary">18 items</div>
+                        <div class="text-yum-primary-ec font-semibold">$67.50</div>
+                    </div>
+                    <button class="yum-button-primary text-white px-8 py-3 rounded-xl font-semibold w-full text-base">
+                        Create List
+                    </button>
+                </div>
+                
+                <!-- Recipe Scaling Card -->
+                <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 text-center border border-white/20 transition-all duration-400 hover:-translate-y-3 hover:shadow-3xl hover:bg-white yum-card-enhanced">
+                    <div class="text-5xl mb-4">⚖️</div>
+                    <h3 class="text-2xl font-bold text-yum-primary-ec mb-4">Recipe Scaling</h3>
+                    <p class="text-yum-secondary text-base leading-relaxed mb-6">Automatically adjust ingredient quantities for any number of servings with precision scaling</p>
+                    <div class="flex items-center justify-center gap-3 bg-yum-primary/5 rounded-lg p-4 mb-6">
+                        <button class="w-8 h-8 bg-yum-primary/10 text-yum-primary rounded-full font-bold">-</button>
+                        <span class="text-yum-primary-ec font-semibold">4 servings</span>
+                        <button class="w-8 h-8 bg-yum-primary/10 text-yum-primary rounded-full font-bold">+</button>
+                    </div>
+                    <button class="yum-button-primary text-white px-8 py-3 rounded-xl font-semibold w-full text-base">
+                        Try Scaling
+                    </button>
+                </div>
+                
+                <!-- Dietary Preferences Card -->
+                <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 text-center border border-white/20 transition-all duration-400 hover:-translate-y-3 hover:shadow-3xl hover:bg-white yum-card-enhanced">
+                    <div class="text-5xl mb-4">🌱</div>
+                    <h3 class="text-2xl font-bold text-yum-primary-ec mb-4">Dietary Preferences</h3>
+                    <p class="text-yum-secondary text-base leading-relaxed mb-6">Filter recipes by dietary restrictions, allergies, and preferences with comprehensive support</p>
+                    <div class="grid grid-cols-2 gap-2 mb-6">
+                        <span class="bg-green-100 text-green-700 px-3 py-2 rounded-lg text-sm">Vegetarian</span>
+                        <span class="bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm">Gluten-Free</span>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-2 rounded-lg text-sm">Keto</span>
+                        <span class="bg-orange-100 text-orange-700 px-3 py-2 rounded-lg text-sm">Paleo</span>
+                    </div>
+                    <button class="yum-button-primary text-white px-8 py-3 rounded-xl font-semibold w-full text-base">
+                        Set Preferences
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Stats Section -->
+            <div class="bg-white/10 backdrop-blur-sm border-t border-white/20 p-12 relative z-10">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-white mb-4 drop-shadow-lg">Powered by Advanced AI & Data</h2>
+                    <p class="text-white/80 text-lg max-w-2xl mx-auto">YumMate leverages Spoonacular's comprehensive food database and advanced algorithms</p>
+                </div>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center text-white">
+                        <div class="text-4xl font-bold mb-2 drop-shadow-lg">300K+</div>
+                        <div class="text-white/80">Recipes</div>
+                    </div>
+                    <div class="text-center text-white">
+                        <div class="text-4xl font-bold mb-2 drop-shadow-lg">50+</div>
+                        <div class="text-white/80">Cuisines</div>
+                    </div>
+                    <div class="text-center text-white">
+                        <div class="text-4xl font-bold mb-2 drop-shadow-lg">20+</div>
+                        <div class="text-white/80">Diet Types</div>
+                    </div>
+                    <div class="text-center text-white">
+                        <div class="text-4xl font-bold mb-2 drop-shadow-lg">100%</div>
+                        <div class="text-white/80">Nutrition Data</div>
                     </div>
                 </div>
             </div>
@@ -152,27 +317,99 @@
                 </div>
                 <div class="p-8 bg-gradient-to-br from-white/80 to-yum-primary-light/40 backdrop-blur-sm">
                     <input type="text" class="w-full h-14 border-2 border-yum-primary/20 rounded-2xl px-6 text-lg mb-6 transition-all duration-300 bg-white/90 text-yum-secondary font-normal focus:border-yum-primary-ec focus:outline-none focus:shadow-lg focus:bg-white/95" placeholder="🔍 Search recipes...">
-                    <div class="flex gap-4 mb-6 flex-wrap">
-                        <button class="bg-white/90 border border-yum-primary/20 px-7 py-4 rounded-xl cursor-pointer text-yum-secondary font-medium transition-all duration-300 text-sm hover:border-yum-primary-ec hover:bg-white/95 hover:-translate-y-0.5 hover:shadow-lg">Cuisine ▼</button>
-                        <button class="bg-white/90 border border-yum-primary/20 px-7 py-4 rounded-xl cursor-pointer text-yum-secondary font-medium transition-all duration-300 text-sm hover:border-yum-primary-ec hover:bg-white/95 hover:-translate-y-0.5 hover:shadow-lg">Meal Type ▼</button>
-                        <button class="bg-white/90 border border-yum-primary/20 px-7 py-4 rounded-xl cursor-pointer text-yum-secondary font-medium transition-all duration-300 text-sm hover:border-yum-primary-ec hover:bg-white/95 hover:-translate-y-0.5 hover:shadow-lg">Diet ▼</button>
-                        <button class="bg-white/90 border border-yum-primary/20 px-7 py-4 rounded-xl cursor-pointer text-yum-secondary font-medium transition-all duration-300 text-sm hover:border-yum-primary-ec hover:bg-white/95 hover:-translate-y-0.5 hover:shadow-lg">Time ▼</button>
+                    
+                    <!-- Enhanced Advanced Filters -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <select class="bg-white/90 border border-yum-primary/20 px-4 py-3 rounded-xl text-yum-secondary font-medium transition-all duration-300 focus:border-yum-primary-ec focus:outline-none">
+                            <option>All Cuisines</option>
+                            <option>Italian</option>
+                            <option>Mexican</option>
+                            <option>Asian</option>
+                            <option>American</option>
+                            <option>Mediterranean</option>
+                        </select>
+                        <select class="bg-white/90 border border-yum-primary/20 px-4 py-3 rounded-xl text-yum-secondary font-medium transition-all duration-300 focus:border-yum-primary-ec focus:outline-none">
+                            <option>Any Diet</option>
+                            <option>Vegetarian</option>
+                            <option>Vegan</option>
+                            <option>Gluten Free</option>
+                            <option>Ketogenic</option>
+                            <option>Paleo</option>
+                        </select>
+                        <select class="bg-white/90 border border-yum-primary/20 px-4 py-3 rounded-xl text-yum-secondary font-medium transition-all duration-300 focus:border-yum-primary-ec focus:outline-none">
+                            <option>Any Time</option>
+                            <option>Under 15 min</option>
+                            <option>Under 30 min</option>
+                            <option>Under 60 min</option>
+                            <option>Over 60 min</option>
+                        </select>
+                        <select class="bg-white/90 border border-yum-primary/20 px-4 py-3 rounded-xl text-yum-secondary font-medium transition-all duration-300 focus:border-yum-primary-ec focus:outline-none">
+                            <option>Any Calories</option>
+                            <option>Under 300 cal</option>
+                            <option>300-500 cal</option>
+                            <option>500-700 cal</option>
+                            <option>Over 700 cal</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Filter Summary -->
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-sm text-yum-secondary">Active filters:</span>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="bg-yum-primary/10 text-yum-primary px-3 py-1 rounded-full text-sm">Italian</span>
+                            <span class="bg-yum-primary/10 text-yum-primary px-3 py-1 rounded-full text-sm">Under 30 min</span>
+                            <button class="text-yum-secondary/60 hover:text-yum-secondary text-sm">Clear all</button>
+                        </div>
                     </div>
                 </div>
                 <div class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-8 p-8">
                     <div class="bg-white/95 rounded-3xl yum-shadow-primary overflow-hidden border border-yum-primary/10 transition-all duration-400 backdrop-blur-sm hover:-translate-y-2 hover:shadow-2xl yum-card-enhanced">
                         <div class="w-full h-48 bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center text-orange-800 text-2xl font-medium">🍝 Recipe Image</div>
                         <div class="p-6">
-                            <div class="text-xl font-semibold mb-3 text-yum-primary-ec">Pasta Carbonara</div>
-                            <div class="text-yum-secondary text-sm mb-5 font-normal">⏱️ 30 min • 👥 4 servings</div>
+                            <div class="text-xl font-semibold mb-2 text-yum-primary-ec">Pasta Carbonara</div>
+                            <div class="text-yum-secondary text-sm mb-3 font-normal">⏱️ 30 min • 👥 4 servings</div>
+                            
+                            <!-- Nutrition Quick Stats -->
+                            <div class="flex justify-between items-center mb-4 p-3 bg-yum-primary-light/20 rounded-xl">
+                                <div class="text-center">
+                                    <div class="text-xs text-yum-secondary/70">Calories</div>
+                                    <div class="font-semibold text-yum-secondary">420</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xs text-yum-secondary/70">Protein</div>
+                                    <div class="font-semibold text-yum-secondary">25g</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xs text-yum-secondary/70">Health</div>
+                                    <div class="font-semibold text-green-600">85%</div>
+                                </div>
+                            </div>
+                            
                             <button class="yum-button-primary text-white border-0 px-7 py-3 rounded-xl cursor-pointer w-full font-semibold transition-all duration-300 text-base yum-shadow-accent">View Details</button>
                         </div>
                     </div>
                     <div class="bg-white/95 rounded-3xl yum-shadow-primary overflow-hidden border border-yum-primary/10 transition-all duration-400 backdrop-blur-sm hover:-translate-y-2 hover:shadow-2xl yum-card-enhanced">
                         <div class="w-full h-48 bg-gradient-to-br from-red-100 to-yellow-200 flex items-center justify-center text-red-800 text-2xl font-medium">🍛 Recipe Image</div>
                         <div class="p-6">
-                            <div class="text-xl font-semibold mb-3 text-yum-primary-ec">Chicken Curry</div>
-                            <div class="text-yum-secondary text-sm mb-5 font-normal">⏱️ 45 min • 👥 6 servings</div>
+                            <div class="text-xl font-semibold mb-2 text-yum-primary-ec">Chicken Curry</div>
+                            <div class="text-yum-secondary text-sm mb-3 font-normal">⏱️ 45 min • 👥 6 servings</div>
+                            
+                            <!-- Nutrition Quick Stats -->
+                            <div class="flex justify-between items-center mb-4 p-3 bg-yum-primary-light/20 rounded-xl">
+                                <div class="text-center">
+                                    <div class="text-xs text-yum-secondary/70">Calories</div>
+                                    <div class="font-semibold text-yum-secondary">350</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xs text-yum-secondary/70">Protein</div>
+                                    <div class="font-semibold text-yum-secondary">32g</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xs text-yum-secondary/70">Health</div>
+                                    <div class="font-semibold text-green-600">78%</div>
+                                </div>
+                            </div>
+                            
                             <button class="yum-button-primary text-white border-0 px-7 py-3 rounded-xl cursor-pointer w-full font-semibold transition-all duration-300 text-base yum-shadow-accent">View Details</button>
                         </div>
                     </div>
@@ -241,6 +478,23 @@
                         <div class="flex-1">
                             <h1 class="text-4xl font-bold text-yum-primary-ec mb-4">Creamy Pasta Carbonara</h1>
                             
+                            <!-- Recipe Scaling Control -->
+                            <div class="bg-white/70 rounded-xl p-4 mb-6 border border-yum-primary/10">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-4">
+                                        <label class="text-yum-secondary font-medium">Servings:</label>
+                                        <div class="flex items-center gap-2">
+                                            <button class="w-8 h-8 bg-yum-primary/10 text-yum-primary rounded-full flex items-center justify-center font-bold hover:bg-yum-primary/20 transition-colors">-</button>
+                                            <span class="w-8 text-center font-semibold text-yum-primary-ec">4</span>
+                                            <button class="w-8 h-8 bg-yum-primary/10 text-yum-primary rounded-full flex items-center justify-center font-bold hover:bg-yum-primary/20 transition-colors">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm text-yum-secondary/70">
+                                        Ingredients will adjust automatically
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <!-- Recipe Stats -->
                             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                                 <div class="bg-white/70 rounded-xl p-4 text-center border border-yum-primary/10">
@@ -259,9 +513,32 @@
                                     <div class="font-semibold text-yum-primary-ec">4 people</div>
                                 </div>
                                 <div class="bg-white/70 rounded-xl p-4 text-center border border-yum-primary/10">
-                                    <div class="text-2xl mb-2">🔥</div>
-                                    <div class="text-sm text-yum-secondary">Difficulty</div>
-                                    <div class="font-semibold text-yum-primary-ec">Easy</div>
+                                    <div class="text-2xl mb-2">�</div>
+                                    <div class="text-sm text-yum-secondary">Health Score</div>
+                                    <div class="font-semibold text-green-600">85%</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Enhanced Nutrition Facts -->
+                            <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-4 mb-6 border border-green-200">
+                                <h3 class="text-lg font-semibold text-green-800 mb-3">📊 Nutrition Facts (per serving)</h3>
+                                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div class="text-center">
+                                        <div class="text-2xl font-bold text-green-700">420</div>
+                                        <div class="text-sm text-green-600">Calories</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-2xl font-bold text-blue-700">25g</div>
+                                        <div class="text-sm text-blue-600">Protein</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-2xl font-bold text-orange-700">45g</div>
+                                        <div class="text-sm text-orange-600">Carbs</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-2xl font-bold text-purple-700">18g</div>
+                                        <div class="text-sm text-purple-600">Fat</div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -288,23 +565,23 @@
                             <div class="space-y-3">
                                 <div class="flex items-center gap-3 p-3 hover:bg-yum-primary-light/20 rounded-lg transition-colors">
                                     <div class="w-2 h-2 bg-yum-primary rounded-full"></div>
-                                    <span class="text-yum-secondary">400g spaghetti pasta</span>
+                                    <span class="text-yum-secondary"><strong>400g</strong> spaghetti pasta</span>
                                 </div>
                                 <div class="flex items-center gap-3 p-3 hover:bg-yum-primary-light/20 rounded-lg transition-colors">
                                     <div class="w-2 h-2 bg-yum-primary rounded-full"></div>
-                                    <span class="text-yum-secondary">200g pancetta, diced</span>
+                                    <span class="text-yum-secondary"><strong>200g</strong> pancetta, diced</span>
                                 </div>
                                 <div class="flex items-center gap-3 p-3 hover:bg-yum-primary-light/20 rounded-lg transition-colors">
                                     <div class="w-2 h-2 bg-yum-primary rounded-full"></div>
-                                    <span class="text-yum-secondary">4 large eggs</span>
+                                    <span class="text-yum-secondary"><strong>4 large</strong> eggs</span>
                                 </div>
                                 <div class="flex items-center gap-3 p-3 hover:bg-yum-primary-light/20 rounded-lg transition-colors">
                                     <div class="w-2 h-2 bg-yum-primary rounded-full"></div>
-                                    <span class="text-yum-secondary">100g Parmesan cheese, grated</span>
+                                    <span class="text-yum-secondary"><strong>100g</strong> Parmesan cheese, grated</span>
                                 </div>
                                 <div class="flex items-center gap-3 p-3 hover:bg-yum-primary-light/20 rounded-lg transition-colors">
                                     <div class="w-2 h-2 bg-yum-primary rounded-full"></div>
-                                    <span class="text-yum-secondary">2 cloves garlic, minced</span>
+                                    <span class="text-yum-secondary"><strong>2 cloves</strong> garlic, minced</span>
                                 </div>
                                 <div class="flex items-center gap-3 p-3 hover:bg-yum-primary-light/20 rounded-lg transition-colors">
                                     <div class="w-2 h-2 bg-yum-primary rounded-full"></div>
@@ -316,11 +593,15 @@
                                 </div>
                                 <div class="flex items-center gap-3 p-3 hover:bg-yum-primary-light/20 rounded-lg transition-colors">
                                     <div class="w-2 h-2 bg-yum-primary rounded-full"></div>
-                                    <span class="text-yum-secondary">2 tbsp extra virgin olive oil</span>
+                                    <span class="text-yum-secondary"><strong>2 tbsp</strong> extra virgin olive oil</span>
                                 </div>
                             </div>
+                            <div class="mt-6 p-3 bg-yum-primary/5 rounded-lg border border-yum-primary/10">
+                                <div class="text-sm text-yum-secondary/70 mb-2">💡 Smart Tip:</div>
+                                <div class="text-sm text-yum-secondary">Quantities automatically adjust when you change servings above</div>
+                            </div>
                             <button class="mt-6 w-full bg-yum-accent/10 text-yum-accent border border-yum-accent/20 px-6 py-3 rounded-xl cursor-pointer font-medium transition-all duration-300 hover:bg-yum-accent/20">
-                                📋 Copy to Grocery List
+                                📋 Add All to Grocery List
                             </button>
                         </div>
                         
@@ -699,29 +980,167 @@
                         <div class="bg-white/80 rounded-2xl p-6 border border-yum-primary/10">
                             <div class="flex items-center justify-between mb-6">
                                 <h2 class="text-2xl font-bold text-green-700 flex items-center gap-3">
-                                    🥬 Produce Section
+                                    🥬 Produce
                                 </h2>
                                 <div class="bg-green-100 px-3 py-1 rounded-full text-green-700 text-sm font-medium">
-                                    Progress: 2/6
+                                    4 items
                                 </div>
                             </div>
                             <div class="space-y-3">
                                 <label class="flex items-center gap-4 p-3 hover:bg-green-50 rounded-lg transition-colors cursor-pointer">
-                                    <input type="checkbox" checked class="w-5 h-5 text-green-600 rounded">
-                                    <div class="flex-1">
-                                        <div class="text-yum-secondary font-medium">2 cups mixed berries</div>
-                                        <div class="text-sm text-green-600">(Smoothie Bowl)</div>
-                                    </div>
-                                </label>
-                                <label class="flex items-center gap-4 p-3 hover:bg-green-50 rounded-lg transition-colors cursor-pointer">
-                                    <input type="checkbox" checked class="w-5 h-5 text-green-600 rounded">
-                                    <div class="flex-1">
-                                        <div class="text-yum-secondary font-medium">1 head romaine lettuce</div>
-                                        <div class="text-sm text-green-600">(Caesar Salad)</div>
-                                    </div>
+                                    <input type="checkbox" class="w-5 h-5 text-green-600 rounded">
+                                    <span class="text-yum-secondary">2 lbs fresh tomatoes</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Pasta recipes</span>
                                 </label>
                                 <label class="flex items-center gap-4 p-3 hover:bg-green-50 rounded-lg transition-colors cursor-pointer">
                                     <input type="checkbox" class="w-5 h-5 text-green-600 rounded">
+                                    <span class="text-yum-secondary">1 bunch fresh basil</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Pasta recipes</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-green-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-green-600 rounded">
+                                    <span class="text-yum-secondary">3 medium onions</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Multiple recipes</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-green-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-green-600 rounded">
+                                    <span class="text-yum-secondary">1 lb fresh garlic</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Seasoning</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Meat & Proteins Section -->
+                        <div class="bg-white/80 rounded-2xl p-6 border border-yum-primary/10">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-2xl font-bold text-red-700 flex items-center gap-3">
+                                    🥩 Meat & Proteins
+                                </h2>
+                                <div class="bg-red-100 px-3 py-1 rounded-full text-red-700 text-sm font-medium">
+                                    3 items
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-4 p-3 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-red-600 rounded">
+                                    <span class="text-yum-secondary">200g pancetta, diced</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Pasta carbonara</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-red-600 rounded">
+                                    <span class="text-yum-secondary">2 lbs chicken breast</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Chicken curry</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-red-600 rounded">
+                                    <span class="text-yum-secondary">1 lb ground beef</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Planned meals</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Dairy & Refrigerated -->
+                        <div class="bg-white/80 rounded-2xl p-6 border border-yum-primary/10">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-2xl font-bold text-blue-700 flex items-center gap-3">
+                                    🧀 Dairy & Refrigerated
+                                </h2>
+                                <div class="bg-blue-100 px-3 py-1 rounded-full text-blue-700 text-sm font-medium">
+                                    5 items
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-4 p-3 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-blue-600 rounded">
+                                    <span class="text-yum-secondary">4 large eggs</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Pasta carbonara</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-blue-600 rounded">
+                                    <span class="text-yum-secondary">100g Parmesan cheese</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Pasta carbonara</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-blue-600 rounded">
+                                    <span class="text-yum-secondary">1 gallon whole milk</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Multiple recipes</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-blue-600 rounded">
+                                    <span class="text-yum-secondary">1 lb butter</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Baking</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-blue-600 rounded">
+                                    <span class="text-yum-secondary">Greek yogurt</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Breakfast</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Pantry & Dry Goods -->
+                        <div class="bg-white/80 rounded-2xl p-6 border border-yum-primary/10">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-2xl font-bold text-yellow-700 flex items-center gap-3">
+                                    🏺 Pantry & Dry Goods
+                                </h2>
+                                <div class="bg-yellow-100 px-3 py-1 rounded-full text-yellow-700 text-sm font-medium">
+                                    6 items
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-4 p-3 hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-yellow-600 rounded">
+                                    <span class="text-yum-secondary">400g spaghetti pasta</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Pasta carbonara</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-yellow-600 rounded">
+                                    <span class="text-yum-secondary">Extra virgin olive oil</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Cooking base</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-yellow-600 rounded">
+                                    <span class="text-yum-secondary">Sea salt</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Seasoning</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-yellow-600 rounded">
+                                    <span class="text-yum-secondary">Black pepper</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Seasoning</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-yellow-600 rounded">
+                                    <span class="text-yum-secondary">All-purpose flour</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Baking</span>
+                                </label>
+                                <label class="flex items-center gap-4 p-3 hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer">
+                                    <input type="checkbox" class="w-5 h-5 text-yellow-600 rounded">
+                                    <span class="text-yum-secondary">Basmati rice</span>
+                                    <span class="ml-auto text-sm text-yum-secondary/60">Chicken curry</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Smart Shopping Summary -->
+                    <div class="mt-8 bg-gradient-to-br from-yum-primary/5 to-yum-accent/5 rounded-2xl p-6 border border-yum-primary/20">
+                        <h3 class="text-xl font-semibold text-yum-primary-ec mb-4 text-center">📊 Smart Shopping Summary</h3>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-yum-primary-ec">18</div>
+                                <div class="text-sm text-yum-secondary">Total Items</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">$67.50</div>
+                                <div class="text-sm text-yum-secondary">Estimated Cost</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">4</div>
+                                <div class="text-sm text-yum-secondary">Store Sections</div>
+                            </div>
+                        </div>
+                    </div>
                                     <div class="flex-1">
                                         <div class="text-yum-secondary font-medium">3 cloves garlic</div>
                                         <div class="text-sm text-green-600">(Multiple recipes)</div>

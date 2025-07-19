@@ -6,7 +6,37 @@
 /* All colors are now managed through constants/colors.ts and accessed via Tailwind utilities */
 
 .yum-gradient-bg {
-  background: linear-gradient(135deg, #f4f4f4 0%, #f9fce3 100%);
+  background: url("/bg-image.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.yum-gradient-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(24, 24, 27, 0.45); /* enhanced dark overlay for better text contrast */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.yum-gradient-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Enhanced text shadows for better readability over background image */
+.yum-text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.yum-text-shadow-strong {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .yum-button-primary {

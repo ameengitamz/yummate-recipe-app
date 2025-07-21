@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 /* --- YumMate Custom Classes --- */
-/* All colors are now managed through constants/colors.ts and accessed via Tailwind utilities */
 
 .yum-gradient-bg {
   background: url("/bg-image.jpg");
@@ -30,7 +29,7 @@
   z-index: 1;
 }
 
-/* Enhanced text shadows for better readability over background image */
+/* Text shadows for better readability over background image */
 .yum-text-shadow {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3);
 }
@@ -39,6 +38,7 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
+/* Button styles */
 .yum-button-primary {
   background: linear-gradient(135deg, #7388c6 0%, #a8b8e6 100%);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -49,6 +49,7 @@
   transform: translateY(-2px);
 }
 
+/* Shadow effects */
 .yum-shadow-primary {
   box-shadow: 0 8px 32px rgba(85, 207, 199, 0.1), 0 4px 16px rgba(85, 207, 199, 0.05);
 }
@@ -57,6 +58,7 @@
   box-shadow: 0 4px 12px rgba(115, 136, 198, 0.3);
 }
 
+/* Card animations */
 .yum-card-enhanced {
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -66,7 +68,7 @@
   box-shadow: 0 20px 40px rgba(85, 207, 199, 0.25);
 }
 
-/* Matching wireframe font styles */
+/* Font styles */
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;

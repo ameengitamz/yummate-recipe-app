@@ -31,7 +31,7 @@ export default {
         'yum-neutral': '#6b7280',
       },
       height: {
-        '17': '4.25rem', // 68px - custom height for navigation header
+        '17': '4.25rem', // 68px - navigation header height
       },
       fontFamily: {
         'inter': ['Inter', 'sans-serif'],

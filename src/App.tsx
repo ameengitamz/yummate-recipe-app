@@ -6,7 +6,8 @@ import {
   RecipesPage, 
   MealPlannerPage, 
   GroceryListPage, 
-  NotFoundPage 
+  NotFoundPage,
+  // ApiTestPage
 } from './pages';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route path="/recipes" element={<RecipesPage />} />
             <Route path="/planner" element={<MealPlannerPage />} />
             <Route path="/grocery" element={<GroceryListPage />} />
+            {/* <Route path="/api-test" element={<ApiTestPage />} /> */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

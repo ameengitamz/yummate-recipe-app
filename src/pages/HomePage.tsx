@@ -1,9 +1,46 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { usePopularSuggestions, useRecipeStats } from "../hooks/useSearch";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [showSuggestions, setShowSuggestions] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState('');
+  
+  // API hooks - Only using stats (one-time call) and static suggestions to conserve API quota
+  const { suggestions: popularSuggestions } = usePopularSuggestions();
+  const { stats, isLoading: isLoadingStats } = useRecipeStats();
+
+  // Handle search input changes (no API calls)
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    // No API calls here - just update the input value
+  };
+
+  // Handle search submission
+  const handleSearchSubmit = (query?: string) => {
+    const searchTerm = query || searchQuery;
+    if (searchTerm.trim()) {
+      // Navigate to recipes page with search query
+      navigate(`/recipes?search=${encodeURIComponent(searchTerm.trim())}`);
+    }
+  };
+
+  // Handle suggestion click
+  const handleSuggestionClick = (suggestion: string) => {
+    handleSearchSubmit(suggestion);
+  };
+
+  // Handle Enter key press
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearchSubmit();
+    }
+  };
+
+  // Display suggestions (always show popular suggestions to avoid API calls)
+  const displaySuggestions = popularSuggestions;
 
   return (
     <div className="w-full">
@@ -40,11 +77,17 @@ const HomePage: React.FC = () => {
                   <input 
                     type="text" 
                     placeholder="What would you like to cook today?" 
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    onKeyPress={handleKeyPress}
                     className="flex-1 bg-transparent text-white placeholder-white/60 text-lg font-medium py-4 px-2 border-0 outline-none focus:placeholder-white/40 transition-all duration-300"
                   />
                   
                   {/* Search Button */}
-                  <button className="bg-gradient-to-r from-yum-primary to-yum-secondary text-white px-8 py-3 rounded-full font-semibold text-base hover:shadow-xl hover:scale-105 transition-all duration-300 mr-1 flex items-center gap-2">
+                  <button 
+                    onClick={() => handleSearchSubmit()}
+                    className="bg-gradient-to-r from-yum-primary to-yum-secondary text-white px-8 py-3 rounded-full font-semibold text-base hover:shadow-xl hover:scale-105 transition-all duration-300 mr-1 flex items-center gap-2"
+                  >
                     <span>Search</span>
                     <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="hover:translate-x-1 transition-transform duration-300">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -56,11 +99,15 @@ const HomePage: React.FC = () => {
                 {showSuggestions && (
                   <div className="absolute top-full left-0 right-0 mt-4 z-[9999]">
                     <div className="bg-white/95 backdrop-blur-xl rounded-2xl border border-white/30 p-4 shadow-2xl">
-                      <div className="text-gray-700 text-sm font-medium mb-3">Popular searches:</div>
+                      <div className="text-gray-700 text-sm font-medium mb-3">
+                        Popular searches:
+                      </div>
+                      
                       <div className="flex flex-wrap gap-2">
-                        {['Italian Pasta', 'Healthy Breakfast', 'Quick Dinner', 'Vegan Recipes'].map((suggestion) => (
+                        {displaySuggestions.map((suggestion: string, index: number) => (
                           <button 
-                            key={suggestion}
+                            key={`${suggestion}-${index}`}
+                            onClick={() => handleSuggestionClick(suggestion)}
                             className="bg-gradient-to-r from-yum-primary/10 to-yum-secondary/10 hover:from-yum-primary/20 hover:to-yum-secondary/20 text-yum-primary-ec border border-yum-primary/20 text-sm px-4 py-2 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-md"
                           >
                             {suggestion}
@@ -271,14 +318,18 @@ const HomePage: React.FC = () => {
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { value: '300K+', label: 'Recipes' },
-              { value: '50+', label: 'Cuisines' },
-              { value: '20+', label: 'Diet Types' },
-              { value: '100%', label: 'Nutrition Data' }
+              { value: stats.totalRecipes, label: 'Recipes' },
+              { value: stats.cuisines, label: 'Cuisines' },
+              { value: stats.dietTypes, label: 'Diet Types' },
+              { value: stats.nutritionData, label: 'Nutrition Data' }
             ].map((stat, index) => (
               <div key={index} className="text-center bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                 <div className="text-3xl font-bold mb-2 bg-gradient-to-r from-yum-primary to-yum-secondary bg-clip-text text-transparent">
-                  {stat.value}
+                  {isLoadingStats ? (
+                    <div className="animate-pulse bg-gradient-to-r from-yum-primary to-yum-secondary rounded h-8 w-16 mx-auto"></div>
+                  ) : (
+                    stat.value
+                  )}
                 </div>
                 <div className="text-yum-secondary font-medium text-sm">{stat.label}</div>
               </div>

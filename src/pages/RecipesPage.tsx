@@ -1,13 +1,52 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Container, Card, Input, Button, Badge, RecipeCard, EmptyState } from '../components';
+import { useSearch } from '../hooks/useSearch';
 
 const RecipesPage = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams] = useSearchParams();
+  const initialQuery = searchParams.get('search') || '';
+  
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
 
+  // Use the API search hook
+  const {
+    recipes,
+    isLoading,
+    error,
+    search,
+    totalResults,
+    hasMore,
+    loadMore,
+    clearError,
+    clearResults
+  } = useSearch();
+
+  // Search on page load if there's a query parameter
+  useEffect(() => {
+    if (initialQuery) {
+      console.log('🔍 Performing initial search for:', initialQuery);
+      search({ query: initialQuery, number: 12 });
+    }
+  }, [initialQuery, search]);
+
+  // Handle search when user clicks search button
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      console.log('🔍 Searching for:', searchQuery);
+      // Clear any existing error before starting new search
+      clearError();
+      search({ 
+        query: searchQuery.trim(),
+        number: 12
+      });
+    }
+  };
+
   // Sample recipes data
-  const recipes = [
+  const staticRecipes = [
     {
       id: '1',
       title: 'Creamy Pasta Carbonara',
@@ -61,15 +100,31 @@ const RecipesPage = () => {
   const categories = ['all', 'Italian', 'Indian', 'Healthy', 'British', 'Japanese', 'American'];
   const difficulties = ['all', 'Easy', 'Medium', 'Hard'];
 
+  // Use API recipes if available, otherwise fallback to static recipes for demo
+  const displayRecipes = recipes.length > 0 ? recipes : staticRecipes;
+
+  // Remove duplicates based on recipe ID to prevent duplicate display
+  const uniqueDisplayRecipes = displayRecipes.filter((recipe, index, self) => 
+    index === self.findIndex((r) => r.id === recipe.id)
+  );
+
   // Filter recipes based on search and filters
-  const filteredRecipes = recipes.filter((recipe) => {
-    const matchesSearch = recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         recipe.cuisine.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredRecipes = uniqueDisplayRecipes.filter((recipe) => {
+    const matchesSearch = !searchQuery || 
+      recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (recipe.cuisine && recipe.cuisine.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesCategory = selectedCategory === 'all' || recipe.cuisine === selectedCategory;
     const matchesDifficulty = selectedDifficulty === 'all' || recipe.difficulty === selectedDifficulty;
     
     return matchesSearch && matchesCategory && matchesDifficulty;
   });
+
+  // Handle Enter key press for search
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   const handleRecipeView = (id: string) => {
     console.log('Navigate to recipe:', id);
@@ -95,13 +150,47 @@ const RecipesPage = () => {
       <Card variant="elevated" className="mb-8">
         <div className="space-y-6">
           {/* Search Bar */}
-          <Input
-            variant="search"
-            placeholder="Search recipes, ingredients, or cuisines..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            leftIcon="🔍"
-          />
+          <div className="flex gap-4">
+            <Input
+              variant="search"
+              placeholder="Search recipes, ingredients, or cuisines..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={handleKeyPress}
+              leftIcon="🔍"
+              className="flex-1"
+            />
+            <Button 
+              variant="primary"
+              onClick={handleSearch}
+              isLoading={isLoading}
+              disabled={!searchQuery.trim()}
+            >
+              Search
+            </Button>
+          </div>
+
+          {/* Show search results count for API results */}
+          {recipes.length > 0 && (
+            <div className="text-sm text-yum-secondary">
+              Found {totalResults || recipes.length} recipes {searchQuery && `for "${searchQuery}"`}
+              {recipes.length > 0 && (
+                <span className="ml-2 text-xs text-yum-neutral">
+                  (Showing {uniqueDisplayRecipes.length} unique)
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Show error if any */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <p className="text-red-600">❌ {error}</p>
+              <Button variant="secondary" size="sm" onClick={clearError} className="mt-2">
+                Try Again
+              </Button>
+            </div>
+          )}
 
           {/* Filter Row */}
           <div className="grid md:grid-cols-2 gap-6">
@@ -160,17 +249,63 @@ const RecipesPage = () => {
       </Card>
 
       {/* Results */}
-      {filteredRecipes.length > 0 ? (
+      {isLoading ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredRecipes.map((recipe) => (
-            <RecipeCard
-              key={recipe.id}
-              {...recipe}
-              onViewDetails={handleRecipeView}
-              onAddToPlanner={handleAddToPlanner}
-            />
+          {[...Array(6)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
+              <div className="h-48 bg-gray-200 rounded-t-lg"></div>
+              <div className="p-4 space-y-3">
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                <div className="flex gap-2">
+                  <div className="h-6 bg-gray-200 rounded w-16"></div>
+                  <div className="h-6 bg-gray-200 rounded w-16"></div>
+                </div>
+              </div>
+            </Card>
           ))}
         </div>
+      ) : filteredRecipes.length > 0 ? (
+        <>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredRecipes.map((recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                {...recipe}
+                onViewDetails={handleRecipeView}
+                onAddToPlanner={handleAddToPlanner}
+              />
+            ))}
+          </div>
+          
+          {/* Load More Button - only show for API results */}
+          {hasMore && recipes.length > 0 && (
+            <div className="text-center mt-8">
+              <div className="space-y-2">
+                <Button 
+                  variant="outline" 
+                  onClick={loadMore}
+                  isLoading={isLoading}
+                  disabled={isLoading || !hasMore}
+                >
+                  {isLoading ? 'Loading...' : 'Load More Recipes'}
+                </Button>
+                <p className="text-xs text-yum-neutral">
+                  Showing {recipes.length} of {totalResults} recipes
+                </p>
+              </div>
+            </div>
+          )}
+          
+          {/* No more results message */}
+          {recipes.length > 0 && !hasMore && totalResults > recipes.length && (
+            <div className="text-center mt-8">
+              <p className="text-sm text-yum-secondary">
+                🎉 You've seen all {totalResults} recipes for this search!
+              </p>
+            </div>
+          )}
+        </>
       ) : (
         <Card variant="elevated">
           <EmptyState
@@ -183,19 +318,11 @@ const RecipesPage = () => {
                 setSearchQuery('');
                 setSelectedCategory('all');
                 setSelectedDifficulty('all');
+                clearResults(); // Clear API results to show static recipes
               }
             }}
           />
         </Card>
-      )}
-
-      {/* Load More Button */}
-      {filteredRecipes.length > 0 && filteredRecipes.length >= 6 && (
-        <div className="text-center mt-12">
-          <Button variant="outline" size="lg">
-            Load More Recipes
-          </Button>
-        </div>
       )}
     </Container>
   );

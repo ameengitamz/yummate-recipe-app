@@ -78,16 +78,17 @@ const MealPlannerPage = () => {
   };
 
   return (
-    <Container>
-      {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-yum-primary-ec mb-4">
-          Meal Planner 📅
-        </h1>
-        <p className="text-xl text-yum-secondary">
-          Plan your weekly meals and stay organized with your cooking schedule
-        </p>
-      </div>
+    <div className="w-full py-8">
+      <Container>
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-5 text-yum-primary-ec drop-shadow-lg yum-text-shadow-strong">
+            Meal Planner 📅
+          </h1>
+          <p className="text-xl text-yum-secondary">
+            Plan your weekly meals and stay organized with your cooking schedule
+          </p>
+        </div>
 
       {/* Week Navigation */}
       <Card variant="elevated" className="mb-8">
@@ -256,7 +257,8 @@ const MealPlannerPage = () => {
           </div>
         </Card>
       </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 

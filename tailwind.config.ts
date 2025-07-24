@@ -18,6 +18,9 @@ export default {
         'yum-purple': '#dda0dd',
         'yum-green': '#90ee90',
         'yum-green-light': '#98fb98',
+        // Text colors
+        'yum-text-primary': 'rgb(255, 240, 214)', // Better readability for text content
+        'yum-text-secondary': '#6b7280', // For secondary text
         // Background colors
         'yum-bg-start': '#f4f4f4',
         'yum-bg-end': '#f9fce3',

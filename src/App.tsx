@@ -4,26 +4,26 @@ import { Navbar } from './components';
 import { 
   HomePage, 
   RecipesPage, 
+  RecipeDetailPage,
   MealPlannerPage, 
   GroceryListPage, 
-  NotFoundPage,
-  // ApiTestPage
+  NotFoundPage
 } from './pages';
 
 function App() {
   return (
     <Router>
-      <div className="yum-gradient-bg min-h-screen text-yum-secondary font-inter leading-relaxed">
+      <div className="yum-gradient-bg text-yum-secondary font-inter leading-relaxed">
         {/* Shared Navigation Header */}
         <Navbar />
 
-        <main>
+        <main className="min-h-screen">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/recipes" element={<RecipesPage />} />
+            <Route path="/recipes/:id" element={<RecipeDetailPage />} />
             <Route path="/planner" element={<MealPlannerPage />} />
             <Route path="/grocery" element={<GroceryListPage />} />
-            {/* <Route path="/api-test" element={<ApiTestPage />} /> */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

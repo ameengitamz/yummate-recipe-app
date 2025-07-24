@@ -78,7 +78,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
         </h3>
         
         {/* Recipe Stats */}
-        <div className="flex items-center gap-4 text-yum-secondary text-sm mb-6">
+        <div className="flex items-center gap-4 text-yum-text-secondary text-sm mb-6">
           <div className="flex items-center gap-1">
             <span>⏱️</span>
             <span>{cookingTime} min</span>

@@ -15,6 +15,9 @@ export const YUMMATE_COLORS = {
   'yum-purple': '#dda0dd',
   'yum-green': '#90ee90',
   'yum-green-light': '#98fb98',
+  // Text colors
+  'yum-text-primary': 'rgb(255, 240, 214)', // Better readability for text content
+  'yum-text-secondary': '#6b7280', // For secondary text
   // Background colors
   'yum-bg-start': '#f4f4f4',
   'yum-bg-end': '#f9fce3',
@@ -52,6 +55,11 @@ export const THEME_COLORS = {
   neutral: YUMMATE_COLORS['yum-neutral'],
 } as const;
 
+export const TEXT_COLORS = {
+  primary: YUMMATE_COLORS['yum-text-primary'],
+  secondary: YUMMATE_COLORS['yum-text-secondary'],
+} as const;
+
 export const GRADIENTS = {
   main: `linear-gradient(135deg, ${BACKGROUND_COLORS.bgStart} 0%, ${BACKGROUND_COLORS.bgEnd} 100%)`,
 } as const;
@@ -61,8 +69,9 @@ export type YummateColorKey = keyof typeof YUMMATE_COLORS;
 export type BrandColorKey = keyof typeof BRAND_COLORS;
 export type ThemeColorKey = keyof typeof THEME_COLORS;
 export type BackgroundColorKey = keyof typeof BACKGROUND_COLORS;
+export type TextColorKey = keyof typeof TEXT_COLORS;
 
 // Usage Examples:
-// Tailwind classes: text-yum-primary-ec, bg-yum-card, border-yum-primary
-// JavaScript: YUMMATE_COLORS['yum-primary-ec']
-// TypeScript: BRAND_COLORS.primary
+// Tailwind classes: text-yum-text-primary, text-yum-text-secondary, bg-yum-card, border-yum-primary
+// JavaScript: YUMMATE_COLORS['yum-text-primary']
+// TypeScript: TEXT_COLORS.primary

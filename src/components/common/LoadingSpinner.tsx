@@ -22,7 +22,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   
   const colorClasses = {
     primary: 'text-yum-primary',
-    secondary: 'text-yum-secondary',
+    secondary: 'text-yum-text-secondary',
     white: 'text-white'
   };
   
@@ -41,7 +41,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         <div className="text-center">
           {spinner}
           {message && (
-            <p className="mt-4 text-yum-secondary font-medium">{message}</p>
+            <p className="mt-4 text-yum-text-primary font-medium">{message}</p>
           )}
         </div>
       </div>
@@ -52,7 +52,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     <div className="flex items-center justify-center">
       {spinner}
       {message && (
-        <span className="ml-3 text-yum-secondary font-medium">{message}</span>
+        <span className="ml-3 text-yum-text-primary font-medium">{message}</span>
       )}
     </div>
   );

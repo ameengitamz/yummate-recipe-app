@@ -27,11 +27,11 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         </div>
       )}
       
-      <h3 className="text-2xl font-bold text-yum-primary-ec mb-4">
+      <h3 className="text-2xl font-bold mb-5 text-yum-primary-ec drop-shadow-lg yum-text-shadow-strong">
         {title}
       </h3>
       
-      <p className="text-yum-secondary text-lg mb-8 max-w-md mx-auto">
+      <p className="text-yum-text-primary text-lg mb-8 max-w-md mx-auto">
         {description}
       </p>
       

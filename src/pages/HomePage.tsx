@@ -154,7 +154,7 @@ const HomePage: React.FC = () => {
           {/* Section Header */}
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-yum-primary-ec mb-3">Powerful Features</h2>
-            <p className="text-lg text-yum-secondary max-w-2xl mx-auto">Everything you need to transform your cooking experience</p>
+            <p className="text-lg text-yum-text-primary max-w-2xl mx-auto">Everything you need to transform your cooking experience</p>
           </div>
           
           {/* Feature Cards Grid */}
@@ -312,7 +312,7 @@ const HomePage: React.FC = () => {
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-yum-primary-ec mb-3">Powered by Advanced AI & Data</h2>
-            <p className="text-lg text-yum-secondary max-w-2xl mx-auto">
+            <p className="text-lg text-yum-text-primary max-w-2xl mx-auto">
               YumMate leverages Spoonacular's comprehensive food database and cutting-edge algorithms to deliver the ultimate cooking experience
             </p>
           </div>
@@ -331,7 +331,7 @@ const HomePage: React.FC = () => {
                     stat.value
                   )}
                 </div>
-                <div className="text-yum-secondary font-medium text-sm">{stat.label}</div>
+                <div className="text-yum-text-secondary font-medium text-sm">{stat.label}</div>
               </div>
             ))}
           </div>

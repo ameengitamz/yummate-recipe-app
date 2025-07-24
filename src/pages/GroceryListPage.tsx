@@ -138,16 +138,17 @@ const GroceryListPage = () => {
   const stats = getStats();
 
   return (
-    <Container>
-      {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-yum-primary-ec mb-4">
-          Grocery List 🛒
-        </h1>
-        <p className="text-xl text-yum-secondary">
-          Keep track of your shopping list and never forget an ingredient
-        </p>
-      </div>
+    <div className="w-full py-8">
+      <Container>
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-5 text-yum-primary-ec drop-shadow-lg yum-text-shadow-strong">
+            Grocery List 🛒
+          </h1>
+          <p className="text-xl text-yum-text-primary">
+            Keep track of your shopping list and never forget an ingredient
+          </p>
+        </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-3 gap-4 mb-8">
@@ -155,19 +156,19 @@ const GroceryListPage = () => {
           <div className="text-2xl font-bold text-yum-primary-ec mb-1">
             {stats.total}
           </div>
-          <p className="text-yum-secondary text-sm">Total Items</p>
+          <p className="text-yum-text-secondary text-sm">Total Items</p>
         </Card>
         <Card variant="outlined" className="text-center p-6">
           <div className="text-2xl font-bold text-green-600 mb-1">
             {stats.purchased}
           </div>
-          <p className="text-yum-secondary text-sm">Purchased</p>
+          <p className="text-yum-text-secondary text-sm">Purchased</p>
         </Card>
         <Card variant="outlined" className="text-center p-6">
           <div className="text-2xl font-bold text-yum-accent mb-1">
             {stats.remaining}
           </div>
-          <p className="text-yum-secondary text-sm">Remaining</p>
+          <p className="text-yum-text-secondary text-sm">Remaining</p>
         </Card>
       </div>
 
@@ -286,7 +287,7 @@ const GroceryListPage = () => {
                         <div className="font-medium text-yum-primary-ec">
                           {item.name}
                         </div>
-                        <div className="text-sm text-yum-secondary">
+                        <div className="text-sm text-yum-text-secondary">
                           {item.quantity} {item.unit}
                           {item.addedFrom && (
                             <span className="ml-2 text-yum-accent">
@@ -331,7 +332,7 @@ const GroceryListPage = () => {
             <span className="text-sm font-medium text-yum-primary-ec">
               Shopping Progress
             </span>
-            <span className="text-sm text-yum-secondary">
+            <span className="text-sm text-yum-text-secondary">
               {Math.round((stats.purchased / stats.total) * 100)}%
             </span>
           </div>
@@ -343,7 +344,8 @@ const GroceryListPage = () => {
           </div>
         </Card>
       )}
-    </Container>
+      </Container>
+    </div>
   );
 };
 

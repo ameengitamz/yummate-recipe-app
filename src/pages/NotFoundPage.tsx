@@ -5,8 +5,9 @@ const NotFoundPage = () => {
   const navigate = useNavigate();
 
   return (
-    <Container>
-      <div className="min-h-[60vh] flex items-center justify-center">
+    <div className="w-full py-8">
+      <Container>
+        <div className="min-h-[60vh] flex items-center justify-center">
         <Card variant="elevated" className="text-center max-w-2xl mx-auto p-12">
           {/* 404 Illustration */}
           <div className="text-8xl mb-8">🍽️</div>
@@ -21,7 +22,7 @@ const NotFoundPage = () => {
             Oops! Recipe Not Found
           </h2>
           
-          <p className="text-xl text-yum-secondary mb-8 leading-relaxed">
+          <p className="text-xl text-yum-text-primary mb-8 leading-relaxed">
             It looks like this page has been eaten by our hungry developers! 
             Don't worry, there are plenty of delicious recipes waiting for you.
           </p>
@@ -53,7 +54,7 @@ const NotFoundPage = () => {
           
           {/* Search Suggestion */}
           <div className="text-center">
-            <p className="text-yum-secondary mb-4">
+            <p className="text-yum-text-primary mb-4">
               Or try searching for something specific:
             </p>
             <div className="flex max-w-md mx-auto">
@@ -74,7 +75,7 @@ const NotFoundPage = () => {
             <h4 className="text-lg font-semibold text-yum-primary-ec mb-4">
               🍴 Fun Kitchen Fact
             </h4>
-            <p className="text-yum-secondary italic">
+            <p className="text-yum-text-secondary italic">
               "The word 'recipe' comes from the Latin word 'recipere' meaning 'to receive' 
               - and we're here to help you receive all the best cooking inspiration!"
             </p>
@@ -88,8 +89,9 @@ const NotFoundPage = () => {
             </p>
           </div>
         </Card>
-      </div>
-    </Container>
+        </div>
+      </Container>
+    </div>
   );
 };
 

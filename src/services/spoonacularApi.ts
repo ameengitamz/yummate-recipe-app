@@ -31,15 +31,11 @@ async function makeApiRequest(endpoint: string, params: any = {}) {
     // Add API key to all requests
     params.apiKey = API_KEY;
     
-    console.log(`🚀 API Request: GET ${endpoint}`);
-    console.log(`🔑 API Key: ${API_KEY.substring(0, 8)}...`);
-    
     const response = await axios.get(`${BASE_URL}${endpoint}`, {
       params,
       timeout: 15000,
     });
     
-    console.log(`✅ API Response: ${response.status} ${endpoint}`);
     return response.data;
     
   } catch (error: any) {
@@ -129,13 +125,20 @@ function convertRecipe(spoonacularRecipe: SpoonacularRecipe): Recipe {
 export async function searchRecipes(params: RecipeSearchParams): Promise<ApiResponse<SearchResult>> {
   try {
     const searchParams = {
-      ...params,
-      addRecipeInformation: true,
-      fillIngredients: true,
+      query: params.query,
       number: params.number || 12,
       offset: params.offset || 0,
+      addRecipeInformation: true,
+      fillIngredients: false, // Reduced for faster loading
+      sort: 'popularity', // Sort by popularity for better results
+      sortDirection: 'desc',
+      ...(params.cuisine && { cuisine: params.cuisine }),
+      ...(params.diet && { diet: params.diet }),
+      ...(params.intolerances && { intolerances: params.intolerances }),
+      ...(params.type && { type: params.type }),
     };
 
+    console.log('🍳 Searching recipes with params:', searchParams);
     const data = await makeApiRequest('/recipes/complexSearch', searchParams) as SpoonacularSearchResult;
 
     // Convert recipes to our format
@@ -151,6 +154,7 @@ export async function searchRecipes(params: RecipeSearchParams): Promise<ApiResp
       },
     };
   } catch (error: any) {
+    console.error('❌ Search recipes failed:', error.message);
     return {
       success: false,
       data: { recipes: [], offset: 0, number: 0, totalResults: 0 },

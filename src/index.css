@@ -5,12 +5,14 @@
 /* --- YumMate Custom Classes --- */
 
 .yum-gradient-bg {
-  background: url("/bg-image.jpg");
+  background: url("/test3.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed; /* Keep background fixed during scroll */
   position: relative;
-  overflow: hidden;
+  min-height: 100vh; /* Ensure full viewport height */
+  overflow-x: hidden;
 }
 
 .yum-gradient-bg::before {

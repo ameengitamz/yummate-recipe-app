@@ -7,18 +7,19 @@ export const Navbar: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
   
   const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/recipes', label: 'Recipes' },
-    { path: '/planner', label: 'Planner' },
-    { path: '/grocery', label: 'Grocery' },
+    { path: '/', label: 'Home', ariaLabel: 'Go to home page' },
+    { path: '/recipes', label: 'Recipes', ariaLabel: 'Browse recipes' },
+    { path: '/planner', label: 'Planner', ariaLabel: 'Meal planner' },
+    { path: '/grocery', label: 'Grocery', ariaLabel: 'Grocery list' },
   ];
 
   return (
-    <header className="h-17 flex items-center justify-between px-8">
+    <header className="h-17 flex items-center justify-between px-8" role="banner">
       {/* Logo Section - Sleek & Minimal */}
       <Link 
         to="/" 
         className="flex items-center gap-3 group transition-all duration-300 hover:scale-105"
+        aria-label="YumMate homepage"
       >
         <img 
           src="/yummate-logo.png" 
@@ -31,12 +32,13 @@ export const Navbar: React.FC = () => {
       </Link>
 
       {/* Sleek Navigation Links */}
-      <nav className="flex items-center gap-8">
+      <nav className="flex items-center gap-8" role="navigation" aria-label="Main navigation">
         {navLinks.map((link) => (
           <Link
             key={link.path}
             to={link.path}
-            className={`relative px-4 py-2 font-medium text-base transition-all duration-300 ${
+            aria-label={link.ariaLabel}
+            className={`relative px-4 py-2 font-medium text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent rounded-lg ${
               isActive(link.path)
                 ? 'text-white border-b-2 border-white pb-1 drop-shadow-md yum-text-shadow'
                 : 'text-white/90 hover:text-white drop-shadow-md yum-text-shadow hover:scale-105'

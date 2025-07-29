@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as spoonacularApi from '../services/spoonacularApi';
+import { LoadingSpinner } from '../components';
 
 interface RecipeIngredient {
   id: number;
@@ -49,8 +50,23 @@ const RecipeDetailPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [servings, setServings] = useState(4);
   const [activeAccordion, setActiveAccordion] = useState<'ingredients' | 'instructions' | null>('ingredients');
+  const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
+
+  // Toggle step completion
+  const toggleStepCompletion = (stepNumber: number) => {
+    const newCompletedSteps = new Set(completedSteps);
+    if (newCompletedSteps.has(stepNumber)) {
+      newCompletedSteps.delete(stepNumber);
+    } else {
+      newCompletedSteps.add(stepNumber);
+    }
+    setCompletedSteps(newCompletedSteps);
+  };
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     const fetchRecipe = async () => {
       if (!id) return;
       
@@ -63,7 +79,6 @@ const RecipeDetailPage: React.FC = () => {
         }
         
         const recipeData = response.data;
-        console.log('🔍 Raw API Response:', recipeData);
         
         const processedRecipe: RecipeDetail = {
           id: parseInt(recipeData.id),
@@ -82,10 +97,23 @@ const RecipeDetailPage: React.FC = () => {
             original: ing.original
           })) || [],
           instructions: recipeData.instructions 
-            ? recipeData.instructions.split('\n').filter(Boolean).map((step: string, index: number) => ({
-                number: index + 1,
-                step: step.trim()
-              }))
+            ? (() => {
+                // Parse HTML instructions if they contain <li> tags
+                if (recipeData.instructions.includes('<li>')) {
+                  const tempDiv = document.createElement('div');
+                  tempDiv.innerHTML = recipeData.instructions;
+                  const listItems = tempDiv.querySelectorAll('li');
+                  return Array.from(listItems).map((li, index) => ({
+                    number: index + 1,
+                    step: li.textContent?.trim() || ''
+                  }));
+                }
+                // Fallback to splitting by newlines for plain text
+                return recipeData.instructions.split('\n').filter(Boolean).map((step: string, index: number) => ({
+                  number: index + 1,
+                  step: step.trim()
+                }));
+              })()
             : [],
           nutrition: recipeData.nutrition?.nutrients ? {
             calories: Math.round(recipeData.nutrition.nutrients.find((n: any) => n.name === 'Calories')?.amount || 0),
@@ -108,12 +136,14 @@ const RecipeDetailPage: React.FC = () => {
           dishTypes: recipeData.dishTypes || []
         };
         
-        console.log('🔍 Processed Nutrition:', processedRecipe.nutrition);
         setRecipe(processedRecipe);
         setServings(processedRecipe.servings);
       } catch (err) {
         setError('Failed to load recipe details');
-        console.error('Error fetching recipe:', err);
+        // Log error for debugging without exposing to user
+        if (import.meta.env.DEV) {
+          console.error('Error fetching recipe:', err);
+        }
       } finally {
         setLoading(false);
       }
@@ -132,20 +162,20 @@ const RecipeDetailPage: React.FC = () => {
   };
 
   const handleAddToGroceryList = () => {
-    console.log('Add to grocery list');
+    // TODO: Implement grocery list integration
+    alert('Feature coming soon! This will add all ingredients to your shopping list.');
   };
 
   if (loading) {
     return (
-      <div className="w-full flex items-center justify-center py-20">
-        <div className="text-center">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-yum-primary/30 rounded-full animate-spin"></div>
-            <div className="w-16 h-16 border-4 border-yum-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
-          </div>
-          <p className="text-yum-text-primary mt-4 text-lg">Loading recipe details...</p>
-        </div>
-      </div>
+      <LoadingSpinner
+        variant="fullscreen"
+        size="xl"
+        message="Loading Recipe"
+        subtitle="Preparing delicious details..."
+        showIcon={true}
+        showDots={true}
+      />
     );
   }
 
@@ -182,19 +212,6 @@ const RecipeDetailPage: React.FC = () => {
               </svg>
               Back to Recipes
             </button>
-            
-            <div className="flex gap-3">
-              <button className="p-2 text-red-600 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-300">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-              </button>
-              <button className="p-2 text-blue-500 hover:text-blue-500 hover:bg-blue-50 rounded-full transition-all duration-300">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-                </svg>
-              </button>
-            </div>
           </div>
         </div>
       </div>
@@ -215,21 +232,6 @@ const RecipeDetailPage: React.FC = () => {
                         alt={recipe.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      {/* Image Overlay with Actions */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-end justify-end p-4 opacity-0 group-hover:opacity-100">
-                        <div className="flex gap-2">
-                          <button className="bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300 hover:scale-110">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                          </button>
-                          <button className="bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300 hover:scale-110">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
                     </>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 text-gray-400">
@@ -395,7 +397,7 @@ const RecipeDetailPage: React.FC = () => {
 
             {/* Servings Control */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">Adjust Servings</h3>
                 <div className="flex items-center gap-4">
                   <button 
@@ -416,7 +418,25 @@ const RecipeDetailPage: React.FC = () => {
                   </button>
                 </div>
               </div>
-              <p className="text-sm text-gray-500 mt-2">Ingredients will adjust automatically</p>
+              <p className="text-sm text-gray-500 mb-3">Ingredients will adjust automatically</p>
+              
+              {/* Quick Serving Presets */}
+              <div className="flex gap-2 flex-wrap">
+                <span className="text-xs text-gray-500 mr-2">Quick select:</span>
+                {[1, 2, 4, 6, 8].map((preset) => (
+                  <button
+                    key={preset}
+                    onClick={() => setServings(preset)}
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                      servings === preset
+                        ? 'bg-yum-primary text-white'
+                        : 'bg-gray-100 text-gray-600 hover:bg-yum-primary hover:text-white'
+                    }`}
+                  >
+                    {preset}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Action Buttons */}
@@ -429,12 +449,6 @@ const RecipeDetailPage: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 12H6L5 9z" />
                 </svg>
                 Add to Shopping List
-              </button>
-              <button className="flex-1 bg-white border-2 border-yum-primary text-yum-primary py-4 px-6 rounded-2xl font-semibold hover:bg-yum-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4v10m6-10v10M5 7h14l-1 12H6L5 7z" />
-                </svg>
-                Save Recipe
               </button>
             </div>
           </div>
@@ -483,11 +497,6 @@ const RecipeDetailPage: React.FC = () => {
                             <span className="text-gray-700 text-sm">{ingredient.name}</span>
                           </div>
                         </div>
-                        <button className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-yum-primary transition-all duration-200">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                          </svg>
-                        </button>
                       </div>
                     ))}
                   </div>
@@ -532,45 +541,51 @@ const RecipeDetailPage: React.FC = () => {
                 <div className="px-6 pb-6">
                   <div className="space-y-4">
                     {recipe.instructions.map((instruction, index) => (
-                      <div key={index} className="flex gap-4 group">
+                      <div key={index} className={`flex gap-4 group p-3 rounded-lg transition-all duration-200 ${
+                        completedSteps.has(instruction.number) ? 'bg-green-50 border border-green-200' : 'hover:bg-gray-50'
+                      }`}>
                         <div className="flex-shrink-0">
-                          <div className="w-8 h-8 bg-yum-primary text-white rounded-full flex items-center justify-center font-bold text-sm group-hover:scale-110 transition-transform">
-                            {instruction.number}
-                          </div>
+                          <button
+                            onClick={() => toggleStepCompletion(instruction.number)}
+                            className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-200 ${
+                              completedSteps.has(instruction.number)
+                                ? 'bg-green-500 text-white'
+                                : 'bg-yum-primary text-white hover:scale-110'
+                            }`}
+                          >
+                            {completedSteps.has(instruction.number) ? '✓' : instruction.number}
+                          </button>
                         </div>
                         <div className="flex-1 pt-1">
-                          <p className="text-gray-700 leading-relaxed text-sm group-hover:text-gray-900 transition-colors">
+                          <p className={`leading-relaxed text-sm transition-colors ${
+                            completedSteps.has(instruction.number)
+                              ? 'text-green-700 line-through'
+                              : 'text-gray-700 group-hover:text-gray-900'
+                          }`}>
                             {instruction.step}
                           </p>
                         </div>
-                        <button className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-green-500 transition-all duration-200 self-start">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                        </button>
                       </div>
                     ))}
                   </div>
                   
-                  {/* Cooking Timer Section */}
-                  <div className="mt-6 p-4 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl border border-teal-100">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-teal-500 text-white rounded-full flex items-center justify-center">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <p className="font-medium text-teal-800">Total Cooking Time</p>
-                          <p className="text-sm text-teal-600">{recipe.readyInMinutes} minutes</p>
-                        </div>
+                  {/* Progress Indicator */}
+                  {recipe.instructions.length > 0 && (
+                    <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-blue-800">Cooking Progress</span>
+                        <span className="text-sm text-blue-600">
+                          {completedSteps.size} of {recipe.instructions.length} steps completed
+                        </span>
                       </div>
-                      <button className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200">
-                        Start Timer
-                      </button>
+                      <div className="w-full bg-blue-200 rounded-full h-2">
+                        <div 
+                          className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${(completedSteps.size / recipe.instructions.length) * 100}%` }}
+                        ></div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>

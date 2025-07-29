@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as spoonacularApi from '../services/spoonacularApi';
+import { LoadingSpinner } from './index';
 
 const ApiTestComponent: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean | null>(null);
@@ -115,10 +116,13 @@ const ApiTestComponent: React.FC = () => {
           }`}
         >
           {isLoading ? (
-            <span className="flex items-center gap-2">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-              Testing...
-            </span>
+            <LoadingSpinner 
+              variant="inline" 
+              size="sm" 
+              showIcon={false} 
+              showDots={false}
+              className="w-6 h-6"
+            />
           ) : (
             '🚀 Run API Tests'
           )}

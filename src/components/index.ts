@@ -24,6 +24,9 @@ export type { EmptyStateProps } from './common/EmptyState';
 export { RecipeCard } from './common/RecipeCard';
 export type { RecipeCardProps } from './common/RecipeCard';
 
+export { ErrorBoundary } from './common/ErrorBoundary';
+export type { ErrorBoundaryProps } from './common/ErrorBoundary';
+
 // Layout Components
 export { Container } from './layout/Container';
 export type { ContainerProps } from './layout/Container';

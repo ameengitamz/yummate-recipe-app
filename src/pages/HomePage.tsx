@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePopularSuggestions, useRecipeStats } from "../hooks/useSearch";
 
-const HomePage: React.FC = () => {
+const HomePage: React.FC = memo(() => {
   const navigate = useNavigate();
   const [showSuggestions, setShowSuggestions] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -12,32 +12,32 @@ const HomePage: React.FC = () => {
   const { stats, isLoading: isLoadingStats } = useRecipeStats();
 
   // Handle search input changes (no API calls)
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
     // No API calls here - just update the input value
-  };
+  }, []);
 
   // Handle search submission
-  const handleSearchSubmit = (query?: string) => {
+  const handleSearchSubmit = useCallback((query?: string) => {
     const searchTerm = query || searchQuery;
     if (searchTerm.trim()) {
       // Navigate to recipes page with search query
       navigate(`/recipes?search=${encodeURIComponent(searchTerm.trim())}`);
     }
-  };
+  }, [searchQuery, navigate]);
 
   // Handle suggestion click
-  const handleSuggestionClick = (suggestion: string) => {
+  const handleSuggestionClick = useCallback((suggestion: string) => {
     handleSearchSubmit(suggestion);
-  };
+  }, [handleSearchSubmit]);
 
   // Handle Enter key press
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSearchSubmit();
     }
-  };
+  }, [handleSearchSubmit]);
 
   // Display suggestions (always show popular suggestions to avoid API calls)
   const displaySuggestions = popularSuggestions;
@@ -339,7 +339,9 @@ const HomePage: React.FC = () => {
       </div>
     </div>
   );
-};
+});
+
+HomePage.displayName = 'HomePage';
 
 export default HomePage;
 

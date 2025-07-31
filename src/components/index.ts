@@ -32,3 +32,5 @@ export { Container } from './layout/Container';
 export type { ContainerProps } from './layout/Container';
 
 export { Navbar } from './layout/Navbar';
+
+export { Footer } from './layout/Footer';

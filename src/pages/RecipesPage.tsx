@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Container, Card, Input, Button, Badge, RecipeCard, EmptyState } from '../components';
 import { useSearch } from '../hooks/useSearch';
+import { responsive } from '../constants';
 
 const RecipesPage = () => {
   const [searchParams] = useSearchParams();
@@ -27,7 +28,7 @@ const RecipesPage = () => {
   // Search on page load only if there's a query parameter
   useEffect(() => {
     if (initialQuery) {
-      search({ query: initialQuery, number: 12 });
+      search({ query: initialQuery, number: 9 }); // Start with 9 recipes
     }
     // No default search - start with empty state
   }, [initialQuery, search]);
@@ -37,9 +38,12 @@ const RecipesPage = () => {
     if (searchQuery.trim()) {
       // Clear any existing error before starting new search
       clearError();
+      // Reset filters for new search to show all results
+      setSelectedCategory('all');
+      setSelectedDifficulty('all');
       search({ 
         query: searchQuery.trim(),
-        number: 12
+        number: 9 // Always start with 9 recipes for new searches
       });
     }
   };
@@ -47,18 +51,14 @@ const RecipesPage = () => {
   const categories = ['all', 'Italian', 'Indian', 'Healthy', 'British', 'Japanese', 'American'];
   const difficulties = ['all', 'Easy', 'Medium', 'Hard'];
 
-  // Use only API recipes - no fallback to static recipes
+  // Use API recipes with client-side filtering for category and difficulty
+  // API search handles the search query, we filter locally for category/difficulty
   const displayRecipes = recipes;
-
-  // Filter recipes based on search and filters (duplicates already handled in hook)
   const filteredRecipes = displayRecipes.filter((recipe) => {
-    const matchesSearch = !searchQuery || 
-      recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (recipe.cuisine && recipe.cuisine.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesCategory = selectedCategory === 'all' || recipe.cuisine === selectedCategory;
     const matchesDifficulty = selectedDifficulty === 'all' || recipe.difficulty === selectedDifficulty;
     
-    return matchesSearch && matchesCategory && matchesDifficulty;
+    return matchesCategory && matchesDifficulty;
   });
 
   // Handle Enter key press for search
@@ -77,14 +77,14 @@ const RecipesPage = () => {
   };
 
   return (
-    <div className="w-full py-8">
+    <div className={`w-full ${responsive.padding.section}`}>
       <Container>
       {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-5 text-yum-primary-ec drop-shadow-lg yum-text-shadow-strong">
+      <div className={responsive.margin.section}>
+        <h1 className={`${responsive.text.heading} font-bold ${responsive.margin.element} text-yum-primary-ec drop-shadow-lg yum-text-shadow-strong`}>
           Recipe Collection 🍳
         </h1>
-        <p className="text-xl text-yum-text-primary">
+        <p className={`${responsive.text.body} text-yum-text-primary`}>
           {initialQuery 
             ? `Search results for "${initialQuery}"` 
             : 'Discover and explore our complete collection of delicious recipes'
@@ -93,10 +93,10 @@ const RecipesPage = () => {
       </div>
 
       {/* Search and Filters */}
-      <Card variant="elevated" className="mb-8">
-        <div className="space-y-6">
+      <Card variant="elevated" className={responsive.margin.section}>
+        <div className="space-y-4 sm:space-y-6">
           {/* Search Bar */}
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Input
               variant="search"
               placeholder="Search for recipes... Try 'pasta', 'chicken curry', or 'chocolate cake'"
@@ -118,11 +118,11 @@ const RecipesPage = () => {
 
           {/* Show search results count for API results */}
           {recipes.length > 0 && (
-            <div className="text-sm text-yum-text-secondary">
+            <div className={`${responsive.text.small} text-yum-text-secondary`}>
               Found {totalResults || recipes.length} recipes {searchQuery && `for "${searchQuery}"`}
               {recipes.length > 0 && (
                 <span className="ml-2 text-xs text-yum-neutral">
-                  (Showing {displayRecipes.length} loaded)
+                  (Loaded {recipes.length}, Showing {filteredRecipes.length})
                 </span>
               )}
             </div>
@@ -130,7 +130,7 @@ const RecipesPage = () => {
 
           {/* Show error if any */}
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4">
               <p className="text-red-600">❌ {error}</p>
               <Button variant="secondary" size="sm" onClick={clearError} className="mt-2">
                 Try Again
@@ -141,13 +141,13 @@ const RecipesPage = () => {
           {/* Filter Row - only show when there are recipes or user has searched */}
           {(recipes.length > 0 || searchQuery || isLoading) && (
             <>
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 {/* Category Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-yum-primary-ec mb-2">
+                  <label className={`block ${responsive.text.small} font-medium text-yum-primary-ec mb-2`}>
                     Cuisine Category
                   </label>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1 sm:gap-2">
                     {categories.map((category) => (
                       <Badge
                         key={category}
@@ -163,10 +163,10 @@ const RecipesPage = () => {
 
                 {/* Difficulty Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-yum-primary-ec mb-2">
+                  <label className={`block ${responsive.text.small} font-medium text-yum-primary-ec mb-2`}>
                     Difficulty Level
                   </label>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1 sm:gap-2">
                     {difficulties.map((difficulty) => (
                       <Badge
                         key={difficulty}
@@ -188,6 +188,11 @@ const RecipesPage = () => {
               <div className="pt-4 border-t border-yum-neutral-light">
                 <p className="text-yum-text-primary">
                   {filteredRecipes.length} recipe{filteredRecipes.length !== 1 ? 's' : ''} found
+                  {filteredRecipes.length !== recipes.length && (
+                    <span className="text-yum-text-secondary ml-1">
+                      (from {recipes.length} loaded)
+                    </span>
+                  )}
                 </p>
               </div>
             </>
@@ -197,11 +202,11 @@ const RecipesPage = () => {
 
       {/* Results */}
       {isLoading ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(6)].map((_, i) => (
+        <div className={responsive.grid.cards}>
+          {[...Array(9)].map((_, i) => ( // Changed from 6 to 9 to match our batch size
             <Card key={i} className="animate-pulse">
               <div className="h-48 bg-gray-200 rounded-t-lg"></div>
-              <div className="p-4 space-y-3">
+              <div className={`${responsive.padding.card} space-y-3`}>
                 <div className="h-4 bg-gray-200 rounded w-3/4"></div>
                 <div className="h-3 bg-gray-200 rounded w-1/2"></div>
                 <div className="flex gap-2">
@@ -214,7 +219,7 @@ const RecipesPage = () => {
         </div>
       ) : filteredRecipes.length > 0 ? (
         <>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={responsive.grid.cards}>
             {filteredRecipes.map((recipe) => (
               <RecipeCard
                 key={recipe.id}
@@ -227,8 +232,8 @@ const RecipesPage = () => {
           
           {/* Load More Button - only show for API results */}
           {hasMore && recipes.length > 0 && (
-            <div className="text-center mt-8">
-              <div className="space-y-2">
+            <div className={`text-center ${responsive.margin.section}`}>
+              <div className="space-y-2 mt-6">
                 <Button 
                   variant="outline" 
                   onClick={loadMore}
@@ -237,8 +242,13 @@ const RecipesPage = () => {
                 >
                   {isLoading ? 'Loading more recipes...' : 'Load More Recipes'}
                 </Button>
-                <p className="text-xs text-yum-neutral">
-                  Showing {recipes.length} of {totalResults} recipes
+                <p className={`${responsive.text.small} text-yum-secondary-ec`}>
+                  Showing {filteredRecipes.length} of {totalResults} recipes
+                  {filteredRecipes.length !== recipes.length && (
+                    <span className="text-yum-text-secondary block text-xs">
+                      ({recipes.length} loaded, filtered by current selections)
+                    </span>
+                  )}
                 </p>
               </div>
             </div>
@@ -246,7 +256,7 @@ const RecipesPage = () => {
           
           {/* No more results message */}
           {recipes.length > 0 && !hasMore && totalResults > recipes.length && (
-            <div className="text-center mt-8">
+            <div className={`text-center ${responsive.margin.section}`}>
               <p className="text-sm text-yum-text-secondary">
                 🎉 You've seen all {totalResults} recipes for this search!
               </p>
@@ -254,7 +264,7 @@ const RecipesPage = () => {
           )}
           
           {/* All results loaded message */}
-          {recipes.length > 0 && !hasMore && totalResults === recipes.length && totalResults > 12 && (
+          {recipes.length > 0 && !hasMore && totalResults === recipes.length && totalResults > 9 && ( // Changed from 12 to 9
             <div className="text-center mt-8">
               <p className="text-sm text-yum-text-secondary">
                 ✨ All {totalResults} recipes loaded!

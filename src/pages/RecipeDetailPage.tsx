@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as spoonacularApi from '../services/spoonacularApi';
 import { LoadingSpinner } from '../components';
+import { responsive } from '../constants';
 
 interface RecipeIngredient {
   id: number;
@@ -198,16 +199,16 @@ const RecipeDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full py-8">
+    <div className={`w-full ${responsive.padding.section}`}>
       {/* Navigation Header */}
       <div className="sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className={`${responsive.container.full} ${responsive.padding.mobile}`}>
           <div className="flex items-center justify-between">
             <button 
               onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-gray-700 hover:text-yum-primary transition-colors font-medium"
+              className={`flex items-center gap-2 text-gray-700 hover:text-yum-primary transition-colors font-medium ${responsive.text.small}`}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Back to Recipes
@@ -217,8 +218,8 @@ const RecipeDetailPage: React.FC = () => {
       </div>
 
       {/* Hero Section with Enhanced Image Display */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
+      <div className={`${responsive.container.full} ${responsive.padding.section}`}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 mb-8 lg:mb-12">
           {/* Left: Enhanced Image Section */}
           <div className="order-2 lg:order-1">
             <div className="sticky top-24">
@@ -246,39 +247,39 @@ const RecipeDetailPage: React.FC = () => {
                 </div>
 
                 {/* Image Info Badge */}
-                <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-sm rounded-full px-3 py-1 shadow-lg border border-white/20">
-                  <div className="flex items-center gap-2 text-xs font-medium text-gray-700">
+                <div className="absolute top-4 sm:top-6 left-4 sm:left-6 bg-white/95 backdrop-blur-sm rounded-full px-2 sm:px-3 py-1 shadow-lg border border-white/20">
+                  <div className={`flex items-center gap-2 ${responsive.text.small} font-medium text-gray-700`}>
                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
                     High Quality
                   </div>
                 </div>
 
                 {/* Quick Stats Floating Cards */}
-                <div className="absolute bottom-6 left-6 right-6 grid grid-cols-3 gap-2">
-                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-white/20">
+                <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 grid grid-cols-3 gap-1 sm:gap-2">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-2 sm:p-3 shadow-lg border border-white/20">
                     <div className="text-center">
-                      <div className="text-lg font-bold text-yum-primary">{recipe.readyInMinutes}</div>
-                      <div className="text-xs text-gray-600">Minutes</div>
+                      <div className={`${responsive.text.body} font-bold text-yum-primary`}>{recipe.readyInMinutes}</div>
+                      <div className={`${responsive.text.small} text-gray-600`}>Minutes</div>
                     </div>
                   </div>
-                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-white/20">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-2 sm:p-3 shadow-lg border border-white/20">
                     <div className="text-center">
-                      <div className="text-lg font-bold text-yum-primary">{servings}</div>
-                      <div className="text-xs text-gray-600">Servings</div>
+                      <div className={`${responsive.text.body} font-bold text-yum-primary`}>{servings}</div>
+                      <div className={`${responsive.text.small} text-gray-600`}>Servings</div>
                     </div>
                   </div>
-                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-white/20">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-2 sm:p-3 shadow-lg border border-white/20">
                     <div className="text-center">
-                      <div className="text-lg font-bold text-green-600">{recipe.healthScore}</div>
-                      <div className="text-xs text-gray-600">Health</div>
+                      <div className={`${responsive.text.body} font-bold text-green-600`}>{recipe.healthScore}</div>
+                      <div className={`${responsive.text.small} text-gray-600`}>Health</div>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Recipe Meta Information */}
-              <div className="mt-6 bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/20">
-                <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className={`${responsive.margin.element} bg-white/90 backdrop-blur-sm rounded-xl ${responsive.padding.card} shadow-lg border border-white/20`}>
+                <div className={`grid grid-cols-2 gap-3 sm:gap-4 ${responsive.text.small}`}>
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
                       <span className="text-orange-600 text-sm">⏱️</span>
@@ -323,29 +324,29 @@ const RecipeDetailPage: React.FC = () => {
           {/* Right: Recipe Information */}
           <div className="order-1 lg:order-2">
             {/* Recipe Title & Basic Info */}
-            <div className="mb-8">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+            <div className={responsive.margin.section}>
+              <h1 className={`${responsive.text.heading} font-bold text-gray-900 ${responsive.margin.element} leading-tight`}>
                 {recipe?.title}
               </h1>
               
               {/* Rating and Tags */}
-              <div className="flex flex-wrap items-center gap-4 mb-6">
+              <div className={`flex flex-wrap items-center gap-3 sm:gap-4 ${responsive.margin.element}`}>
                 <div className="flex items-center gap-2">
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                      <svg key={i} className="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24">
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                       </svg>
                     ))}
                   </div>
-                  <span className="text-gray-600 text-sm">4.8 (324 reviews)</span>
+                  <span className={`text-gray-600 ${responsive.text.small}`}>4.8 (324 reviews)</span>
                 </div>
                 
-                <div className="flex gap-2">
-                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                <div className="flex gap-1 sm:gap-2">
+                  <span className={`bg-green-100 text-green-800 px-2 sm:px-3 py-1 rounded-full ${responsive.text.small} font-medium`}>
                     Healthy
                   </span>
-                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                  <span className={`bg-blue-100 text-blue-800 px-2 sm:px-3 py-1 rounded-full ${responsive.text.small} font-medium`}>
                     Quick
                   </span>
                 </div>

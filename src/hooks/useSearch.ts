@@ -55,7 +55,7 @@ export const useSearch = (options: UseSearchOptions = {}): UseSearchReturn => {
     }
 
     const timeoutId = setTimeout(() => {
-      search({ query: searchQuery, number: 12 });
+      search({ query: searchQuery, number: 9 }); // Changed to 9 recipes
     }, debounceMs);
 
     return () => clearTimeout(timeoutId);
@@ -63,11 +63,13 @@ export const useSearch = (options: UseSearchOptions = {}): UseSearchReturn => {
 
   const search = useCallback(async (params: RecipeSearchParams, append = false) => {
     try {
-      // Get current state for offset calculation
+      // Get current offset for pagination
       let currentOffset = 0;
       
       setState(prev => {
-        currentOffset = append ? prev.offset : 0;
+        // For append (load more), use current offset
+        // For new search, start from 0
+        currentOffset = append ? prev.recipes.length : 0;
         return {
           ...prev,
           isLoading: true,
@@ -79,7 +81,7 @@ export const useSearch = (options: UseSearchOptions = {}): UseSearchReturn => {
       const searchParams = {
         ...params,
         offset: currentOffset,
-        number: params.number || 12,
+        number: params.number || 9,
       };
 
       const result = await spoonacularApi.searchRecipes(searchParams);
@@ -92,21 +94,20 @@ export const useSearch = (options: UseSearchOptions = {}): UseSearchReturn => {
           const newUniqueRecipes = result.data.recipes.filter(recipe => !existingIds.has(recipe.id));
           
           const finalRecipes = append ? [...prev.recipes, ...newUniqueRecipes] : result.data.recipes;
-          const newOffset = append ? prev.offset + newUniqueRecipes.length : result.data.recipes.length;
           
           return {
             ...prev,
             recipes: finalRecipes,
             totalResults: result.data.totalResults,
-            offset: newOffset,
-            hasMore: newOffset < result.data.totalResults,
+            offset: finalRecipes.length, // Use actual recipe count as offset
+            hasMore: finalRecipes.length < result.data.totalResults,
             isLoading: false,
             error: null,
           };
         });
 
-        // Store search params without offset for loadMore
-        setLastSearchParams({ ...params, number: params.number || 12 });
+        // Store search params for loadMore
+        setLastSearchParams({ ...params, number: params.number || 9 });
       } else if (result.success && result.data.recipes.length === 0) {
         // No more recipes available
         setState(prev => ({
@@ -160,32 +161,19 @@ export const useSearch = (options: UseSearchOptions = {}): UseSearchReturn => {
   }, [minQueryLength]);
 
   const loadMore = useCallback(async () => {
-    // Check if we can load more using current state
+    // Check if we can load more
     let canLoadMore = false;
-    let currentState: SearchState;
     
     setState(prev => {
-      currentState = prev;
       canLoadMore = !prev.isLoading && prev.hasMore && lastSearchParams !== null;
       return prev;
     });
 
     if (!canLoadMore || !lastSearchParams) {
-      console.log('❌ Cannot load more:', { 
-        isLoading: currentState!.isLoading,
-        hasMore: currentState!.hasMore,
-        hasSearchParams: !!lastSearchParams,
-        currentOffset: currentState!.offset
-      });
       return;
     }
 
-    console.log('📄 Loading more recipes...', {
-      currentOffset: currentState!.offset,
-      currentRecipeCount: currentState!.recipes.length,
-      totalResults: currentState!.totalResults
-    });
-    
+    // Call search with append=true to add more recipes
     await search(lastSearchParams, true);
   }, [lastSearchParams, search]);
 

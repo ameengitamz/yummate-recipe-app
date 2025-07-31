@@ -5,8 +5,7 @@
  */
 
 export * from './colors';
+export * from './responsive';
 
-// You can add other constant exports here as your project grows
-// export * from './typography';
-// export * from './spacing';
-// export * from './breakpoints';
+// Re-export the simplified responsive utilities
+export { responsive } from './responsive';

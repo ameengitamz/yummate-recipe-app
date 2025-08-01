@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePopularSuggestions, useRecipeStats } from "../hooks/useSearch";
 import { responsive } from "../constants";
@@ -8,9 +8,24 @@ const HomePage: React.FC = memo(() => {
   const [showSuggestions, setShowSuggestions] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
   
+  // Animation states
+  const [isVisible, setIsVisible] = useState(false);
+  const [featuresVisible, setFeaturesVisible] = useState(false);
+  
   // API hooks - Only using stats (one-time call) and static suggestions to conserve API quota
   const { suggestions: popularSuggestions } = usePopularSuggestions();
   const { stats, isLoading: isLoadingStats } = useRecipeStats();
+
+  // Trigger animations on mount
+  useEffect(() => {
+    const timer1 = setTimeout(() => setIsVisible(true), 200);
+    const timer2 = setTimeout(() => setFeaturesVisible(true), 800);
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
 
   // Handle search input changes (no API calls)
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,28 +61,40 @@ const HomePage: React.FC = memo(() => {
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <div className={`${responsive.hero} ${responsive.padding.page} flex flex-col items-center justify-center text-center relative`}>
-        <div className={`${responsive.container.normal} relative z-10 w-full`}>
-          <h1 className={`${responsive.text.hero} ${responsive.margin.element} font-bold text-yum-primary-ec drop-shadow-lg yum-text-shadow-strong leading-tight`}>
-            Discover, Cook, Enjoy!
+      <div className={`${responsive.hero} ${responsive.padding.page} flex flex-col items-center justify-center text-center relative overflow-hidden`}>
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div 
+            className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full animate-float animation-delay-2000"
+            style={{ opacity: isVisible ? 0.3 : 0, transition: 'opacity 2s ease-out 2s' }}
+          />
+          <div 
+            className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/3 rounded-full animate-breathe animation-delay-4000"
+            style={{ opacity: isVisible ? 0.2 : 0, transition: 'opacity 2s ease-out 4s' }}
+          />
+        </div>        <div className={`${responsive.container.normal} relative z-10 w-full transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          {/* Main Heading */}
+          <h1 className={`${responsive.text.hero} ${responsive.margin.element} font-bold text-yum-primary-ec drop-shadow-lg yum-text-shadow-strong leading-tight transform transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <span className="inline-block animate-bounce-gentle">Discover,</span>{' '}
+            <span className="inline-block animate-bounce-gentle animation-delay-200">Cook,</span>{' '}
+            <span className="inline-block animate-bounce-gentle animation-delay-400">Enjoy!</span>
           </h1>
-          <p className={`${responsive.text.body} ${responsive.margin.section} max-w-2xl mx-auto font-normal drop-shadow-md yum-text-shadow leading-relaxed`} style={{ color: 'rgb(255, 235, 170)' }}>
-            Your AI-powered culinary companion with <span className="font-semibold">300,000+ recipes</span>, smart meal planning, and personalized nutrition insights
+          
+          <p className={`${responsive.text.body} ${responsive.margin.section} max-w-2xl mx-auto font-normal drop-shadow-md yum-text-shadow leading-relaxed transform transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ color: 'rgb(255, 235, 170)' }}>
+            Your AI-powered culinary companion with 300,000+ recipes, smart meal planning, and personalized nutrition insights
           </p>
           
-          {/* Modern Search Bar */}
-          <div className={`relative max-w-2xl mx-auto z-50 ${responsive.margin.section}`}>
+          {/* Search Bar */}
+          <div className={`relative max-w-2xl mx-auto z-50 ${responsive.margin.section} transform transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'}`}>
             <div className="relative group">
               <div 
-                className="relative bg-white/10 backdrop-blur-xl rounded-full border border-white/20 p-1 shadow-2xl hover:shadow-3xl transition-all duration-300 z-40"
+                className="relative bg-white/10 backdrop-blur-xl rounded-full border border-white/20 p-1 shadow-2xl hover:shadow-3xl transition-all duration-500 z-40 transform hover:scale-105 group-hover:bg-white/15"
                 onMouseEnter={() => setShowSuggestions(true)}
                 onMouseLeave={() => setShowSuggestions(false)}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-yum-primary/20 via-yum-secondary/20 to-yum-primary/20 rounded-full blur-xl opacity-0 hover:opacity-100 transition-all duration-500 z-30"></div>
-                
                 <div className="relative flex items-center z-40">
-                  <div className="pl-4 sm:pl-6 pr-2">
-                    <svg width="20" height="20" className="w-4 h-4 sm:w-5 sm:h-5 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="pl-4 sm:pl-6 pr-2 transform transition-transform duration-300 group-hover:scale-110">
+                    <svg width="20" height="20" className="w-4 h-4 sm:w-5 sm:h-5 text-white/70 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </div>
@@ -78,16 +105,16 @@ const HomePage: React.FC = memo(() => {
                     value={searchQuery}
                     onChange={handleSearchChange}
                     onKeyPress={handleKeyPress}
-                    className={`${responsive.text.body} flex-1 bg-transparent text-white placeholder-white/60 font-medium border-0 outline-none focus:placeholder-white/40 transition-all duration-300 py-3 sm:py-4 px-1 sm:px-2`}
+                    className={`${responsive.text.body} flex-1 bg-transparent text-white placeholder-white/60 font-medium border-0 outline-none focus:placeholder-white/40 transition-all duration-300 py-3 sm:py-4 px-1 sm:px-2 focus:scale-105`}
                   />
                   
                   <button 
                     onClick={() => handleSearchSubmit()}
-                    className={`${responsive.button.padding} ${responsive.button.text} bg-gradient-to-r from-yum-primary to-yum-secondary text-white rounded-full font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 mr-1 flex items-center gap-1 sm:gap-2`}
+                    className={`${responsive.button.padding} ${responsive.button.text} bg-gradient-to-r from-yum-primary to-yum-secondary text-white rounded-full font-semibold hover:shadow-xl hover:scale-110 transition-all duration-300 mr-1 flex items-center gap-1 sm:gap-2`}
                   >
                     <span className="hidden sm:inline">Search</span>
                     <span className="sm:hidden">Go</span>
-                    <svg width="16" height="16" className="w-4 h-4 sm:w-5 sm:h-5 hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg width="16" height="16" className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                   </button>
@@ -95,9 +122,9 @@ const HomePage: React.FC = memo(() => {
                 
                 {/* Search Suggestions */}
                 {showSuggestions && (
-                  <div className="absolute top-full left-0 right-0 mt-4 z-[9999] mx-2 sm:mx-0">
-                    <div className="bg-white/95 backdrop-blur-xl rounded-2xl border border-white/30 p-3 sm:p-4 shadow-2xl">
-                      <div className="text-gray-700 text-xs sm:text-sm font-medium mb-2 sm:mb-3">
+                  <div className="absolute top-full left-0 right-0 mt-4 z-[9999] mx-2 sm:mx-0 animate-fade-in-up">
+                    <div className="bg-white/95 backdrop-blur-xl rounded-2xl border border-white/30 p-3 sm:p-4 shadow-2xl transform transition-all duration-300 scale-100 hover:scale-105">
+                      <div className="text-gray-700 text-xs sm:text-sm font-medium mb-2 sm:mb-3 animate-fade-in">
                         Popular searches:
                       </div>
                       
@@ -106,7 +133,7 @@ const HomePage: React.FC = memo(() => {
                           <button 
                             key={`${suggestion}-${index}`}
                             onClick={() => handleSuggestionClick(suggestion)}
-                            className="bg-gradient-to-r from-yum-primary/10 to-yum-secondary/10 hover:from-yum-primary/20 hover:to-yum-secondary/20 text-yum-primary-ec border border-yum-primary/20 text-xs sm:text-sm px-2 sm:px-4 py-1 sm:py-2 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-md"
+                            className="bg-white hover:bg-gray-50 text-yum-primary-ec border border-yum-primary/20 text-xs sm:text-sm px-2 sm:px-4 py-1 sm:py-2 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-lg"
                           >
                             {suggestion}
                           </button>
@@ -120,16 +147,19 @@ const HomePage: React.FC = memo(() => {
           </div>
           
           {/* Feature Highlights */}
-          <div className="flex justify-center gap-2 sm:gap-4 lg:gap-6 text-white/90 text-xs sm:text-sm font-medium flex-wrap relative z-10 px-2">
+          <div className={`flex justify-center gap-2 sm:gap-4 lg:gap-6 text-white/90 text-xs sm:text-sm font-medium flex-wrap relative z-10 px-2 transform transition-all duration-1000 delay-900 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {[
               { color: 'from-green-400 to-emerald-400', text: 'AI-Powered' },
               { color: 'from-blue-400 to-cyan-400', text: '300K+ Recipes' },
               { color: 'from-purple-400 to-pink-400', text: 'Smart Nutrition' },
               { color: 'from-orange-400 to-red-400', text: 'Meal Planning' }
             ].map((highlight, index) => (
-              <div key={index} className="flex items-center gap-1 sm:gap-2 bg-white/10 px-2 sm:px-3 py-1 rounded-full backdrop-blur-sm">
-                <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gradient-to-r ${highlight.color} rounded-full animate-pulse`}></div>
-                <span className="whitespace-nowrap">{highlight.text}</span>
+              <div 
+                key={index} 
+                className="flex items-center gap-1 sm:gap-2 bg-white/10 px-2 sm:px-3 py-1 rounded-full backdrop-blur-sm hover:bg-white/20 transition-all duration-300 transform hover:scale-110 cursor-pointer"
+              >
+                <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gradient-to-r ${highlight.color} rounded-full`}></div>
+                <span className="whitespace-nowrap hover:text-white transition-colors duration-300">{highlight.text}</span>
               </div>
             ))}
           </div>
@@ -137,14 +167,18 @@ const HomePage: React.FC = memo(() => {
       </div>
       
       {/* Feature Cards */}
-      <div className={`${responsive.padding.section} ${responsive.padding.page}`}>
+      <div className={`${responsive.padding.section} ${responsive.padding.page} transform transition-all duration-1000 ${featuresVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
         <div className={responsive.container.wide}>
           <div className="text-center mb-6 sm:mb-10 lg:mb-12">
-            <h2 className={`${responsive.text.heading} font-bold text-yum-primary-ec mb-3 sm:mb-4 lg:mb-6`}>Powerful Features</h2>
-            <p className={`${responsive.text.body} text-yum-text-primary max-w-2xl mx-auto`}>Everything you need to transform your cooking experience</p>
+            <h2 className={`${responsive.text.heading} font-bold text-yum-primary-ec mb-3 sm:mb-4 lg:mb-6 transform transition-all duration-800 ${featuresVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              Powerful Features
+            </h2>
+            <p className={`${responsive.text.body} text-yum-text-primary max-w-2xl mx-auto transform transition-all duration-800 delay-200 ${featuresVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              Everything you need to transform your cooking experience
+            </p>
           </div>
           
-          <div className={responsive.grid.cards}>
+          <div className={`${responsive.grid.cards} ${featuresVisible ? 'stagger-fade-in' : ''}`}>
             {[
             {
               id: 'recipes',
@@ -192,15 +226,29 @@ const HomePage: React.FC = memo(() => {
               buttonText: 'Set Preferences'
             }
           ].map((feature) => (
-            <div key={feature.id} className={`group relative ${responsive.card}`}>
-              <div className={`${responsive.padding.card} relative bg-white rounded-2xl shadow-lg text-center border border-gray-100 transition-all duration-300 hover:shadow-xl hover:transform hover:scale-105 h-full flex flex-col`}>
-                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">{feature.icon}</div>
-                <h3 className={`${responsive.text.subheading} font-bold text-yum-primary-ec mb-2 sm:mb-3`}>{feature.title}</h3>
-                <p className={`${responsive.text.small} text-gray-600 leading-relaxed flex-grow mb-4 sm:mb-6`}>{feature.description}</p>
+            <div 
+              key={feature.id} 
+              className="group relative transform transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl cursor-pointer"
+            >
+              <div className="relative bg-white rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 hover:border-yum-primary/30 transition-all duration-500 h-full flex flex-col overflow-hidden text-center group-hover:bg-gradient-to-br group-hover:from-yum-primary/5 group-hover:to-yum-secondary/5 p-6 sm:p-8">
+                {/* Icon */}
+                <div className="text-4xl sm:text-5xl mb-4 sm:mb-6 transition-all duration-300 group-hover:scale-110 flex justify-center">
+                  {feature.icon}
+                </div>
                 
+                {/* Content */}
+                <h3 className="text-xl sm:text-2xl font-bold text-yum-primary-ec mb-3 sm:mb-4 group-hover:text-yum-primary transition-colors duration-300">
+                  {feature.title}
+                </h3>
+                
+                <p className="text-gray-600 leading-relaxed flex-grow mb-6 sm:mb-8 group-hover:text-gray-700 transition-colors duration-300">
+                  {feature.description}
+                </p>
+                
+                {/* Button */}
                 <button 
                   onClick={() => feature.route && navigate(feature.route)}
-                  className="bg-gradient-to-r from-yum-primary to-yum-secondary text-white px-6 py-2 rounded-xl font-semibold w-full hover:shadow-lg transition-all duration-300 transform hover:scale-105 mt-auto"
+                  className="bg-gradient-to-r from-yum-primary to-yum-secondary text-white px-6 py-3 rounded-xl font-semibold w-full transition-all duration-300 transform hover:scale-105 hover:shadow-xl group-hover:from-yum-secondary group-hover:to-yum-primary"
                 >
                   {feature.buttonText}
                 </button>

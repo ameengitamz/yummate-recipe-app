@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { Navbar, Footer, ErrorBoundary, LoadingSpinner } from './components';
 
 // Lazy load all page components
@@ -39,6 +40,9 @@ function App() {
           {/* Footer */}
           <Footer />
         </div>
+        
+        {/* Vercel Analytics */}
+        <Analytics />
       </Router>
     </ErrorBoundary>
   );
